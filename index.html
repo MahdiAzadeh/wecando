@@ -2,6 +2,13 @@
 <html lang="fa" dir="rtl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>وی‌کن‌دو · WeCanDo</title>
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#2f9e6b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="وی‌کن‌دو">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.0.3/Vazirmatn-font-face.css">
 <style>
@@ -57,6 +64,9 @@ button.icon{width:42px;height:42px;padding:0;display:grid;place-items:center;bor
 tr.me td{background:color-mix(in srgb,var(--ac) 12%,transparent);font-weight:700}
 </style></head><body>
 <div id="app"><div class="c">در حال بارگذاری…</div></div>
+<script>
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
+</script>
 <script>
 const SUPABASE_URL = "https://ekmiynpjugfqdnwfofgn.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrbWl5bnBqdWdmcWRud2ZvZmduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNjU1MTcsImV4cCI6MjEwNzk0MTUxN30.6i1LKuj9KUbJAJ916Yo7AOC-_VtftDpVhdDEeR8f5LA";
@@ -156,10 +166,17 @@ async function boot() {
 }
 const load = boot;
 
-const loginForm = () => `<div class="f">
+let legacy = false;
+const loginForm = () => legacy ? `<div class="f">
+<label class="full">ایمیل<input id="e_mail" type="email" dir="ltr"></label>
+<label class="full">رمز عبور<input id="e_pw" type="password" dir="ltr"></label></div>
+<button class="p big" style="margin-top:12px" onclick="loginEmail()">ورود</button>
+<button class="ghost2" style="width:100%;margin-top:8px" onclick="legacy=false;authView('login')">ورود با شماره موبایل</button>`
+: `<div class="f">
 <label class="full">شماره موبایل<input id="l_ph" inputmode="numeric" dir="ltr" placeholder="09121234567"></label>
 <label class="full">رمز ۵ رقمی<input id="l_pin" type="password" inputmode="numeric" maxlength="5" dir="ltr"></label></div>
-<button class="p big" style="margin-top:12px" onclick="login()">ورود</button>`;
+<button class="p big" style="margin-top:12px" onclick="login()">ورود</button>
+<button class="ghost2" style="width:100%;margin-top:8px" onclick="legacy=true;authView('login')">ورود با ایمیل (حساب‌های قدیمی)</button>`;
 
 const regForm = () => `<div class="f">
 <label>نام<input id="r_first"></label>
@@ -189,6 +206,13 @@ function pendingView(pending) {
   <div class="c"><h3>${pending ? 'در انتظار تایید مدیر' : 'ثبت‌نام شما تایید نشد'}</h3>
   <p class="mu">${pending ? 'پس از تایید مدیر می‌توانید وارد شوید.' : 'برای اطلاعات بیشتر با مدیر تماس بگیرید.'}</p>
   <button class="ghost2" onclick="authView('login')">بازگشت به ورود</button></div></div>`;
+}
+async function loginEmail() {
+  const email = $('#e_mail').value.trim(), pw = $('#e_pw').value;
+  if (!email || !pw) return notify('ایمیل و رمز عبور را وارد کنید', false);
+  const {error} = await sb.auth.signInWithPassword({email, password: pw});
+  if (error) return notify('ایمیل یا رمز عبور اشتباه است', false);
+  boot();
 }
 async function login() {
   const ph = normD($('#l_ph').value), pin = normD($('#l_pin').value);
