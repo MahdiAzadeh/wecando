@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>چالشکده</title>
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#2f9e6b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="چالشکده">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.0.3/Vazirmatn-font-face.css">
+<style>
+:root{--bg:#f3f7f4;--card:#fff;--tx:#1d2a23;--mu:#6b7a72;--ac:#2f9e6b;--ac2:#1f7a52;--bd:#e3e9e4;--wait:#b7791f;--today:#fff4d6}
+@media(prefers-color-scheme:dark){:root{--bg:#111815;--card:#1b2520;--tx:#e8eee9;--mu:#93a39a;--bd:#2b3731;--wait:#e0a84a;--today:#3a3320}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0 auto;font-family:Vazirmatn,Tahoma,sans-serif;background:var(--bg);color:var(--tx);padding:12px 12px 96px;max-width:680px;line-height:1.7}
+h1{font-size:1.35em;margin:2px 0}h2{font-size:1.2em;margin:6px 0}h3{margin:4px 0 8px;font-size:1.05em}
+.top{display:flex;align-items:center;gap:8px;margin:4px 2px 8px;font-weight:700;flex-wrap:wrap}
+.hero{background:linear-gradient(135deg,var(--ac2),var(--ac));color:#fff;border-radius:18px;padding:16px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
+.mu2{opacity:.88;font-size:.85em}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 1px 3px #0000000a}
+button,input,select,textarea{font:inherit;padding:10px 14px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);max-width:100%}
+input,select,textarea{width:100%}
+button{cursor:pointer;transition:transform .12s,box-shadow .12s,opacity .2s}
+button:active{transform:scale(.94)}
+button.p{background:var(--ac);color:#fff;border:0;box-shadow:0 3px 0 var(--ac2)}
+button.p:active{box-shadow:0 0 0 var(--ac2);transform:translateY(3px) scale(.98)}
+button.big{width:100%;padding:14px;font-weight:700;font-size:1.05em}
+button.ghost{background:#ffffff26;color:#fff;border:0}
+button.ghost2{background:none;color:var(--tx)}
+button.icon{width:42px;height:42px;padding:0;display:grid;place-items:center;border-radius:14px}
+button.small{padding:6px 10px;font-size:.9em}
+button.danger{color:#a12a2a}
+.busy{pointer-events:none;opacity:.85;position:relative;color:transparent!important}
+.busy::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border:2.5px solid #fff;border-top-color:transparent;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.mu{color:var(--mu);font-size:.9em}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.row.nob{border-bottom:0}
+.ch{display:flex;align-items:center;gap:10px;padding:10px;border:1.5px solid var(--bd);border-radius:14px;margin:8px 0;cursor:pointer;transition:.15s}
+.ch:has(input:checked){border-color:var(--ac);background:color-mix(in srgb,var(--ac) 10%,transparent)}
+.ch input[type=checkbox]{appearance:none;-webkit-appearance:none;width:26px;height:26px;margin:0;padding:0;border-radius:50%;border:2px solid var(--bd);display:grid;place-items:center;flex:none}
+.ch input[type=checkbox]:checked{background:var(--ac);border-color:var(--ac)}.ch input[type=checkbox]:checked::after{content:"✓";color:#fff;font-size:15px;line-height:1}
+.ct{flex:1}.ct small{display:block;color:var(--mu)}.pt{color:var(--ac)}
+.ib{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none;overflow:hidden}
+.ib img{width:100%;height:100%;object-fit:cover}
+.chip{background:var(--bd);border-radius:20px;padding:3px 10px;margin-inline-end:6px;font-size:.85em;display:inline-block}
+.tag{background:color-mix(in srgb,var(--ac) 18%,transparent);color:var(--ac);border-radius:20px;padding:1px 10px;font-size:.8em;display:inline-block}
+.sum{color:var(--ac)}
+.stat{display:flex;gap:16px;align-items:center}.big2{font-size:1.5em;font-weight:700}.big2 small{font-size:.5em;color:var(--mu);font-weight:400}
+.ring{width:76px;height:76px;border-radius:50%;flex:none;background:conic-gradient(var(--ac) calc(var(--p)*1%),var(--bd) 0);display:grid;place-items:center;position:relative}
+.ring::before{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--card)}.ring b{position:relative;font-size:.9em}
+.tabs{position:fixed;bottom:0;inset-inline:0;display:flex;justify-content:space-around;background:var(--card);border-top:1px solid var(--bd);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:5}
+.tabs button{border:0;background:none;display:flex;flex-direction:column;align-items:center;font-size:.72em;color:var(--mu);padding:4px 6px}
+.tabs .on{color:var(--ac);font-weight:700}
+.toast{position:fixed;top:12px;inset-inline:12px;max-width:600px;margin:auto;z-index:9;padding:12px 14px;border-radius:12px;animation:fade 4.5s forwards;box-shadow:0 6px 20px #0003;pointer-events:none}
+@keyframes fade{0%,85%{opacity:1}100%{opacity:0;visibility:hidden}}
+.msg{padding:8px;border-radius:8px}.err{background:#fde8e8;color:#8a1f1f}.ok{background:#e3f4ea;color:#1b5e3b}
+.badge{display:inline-block;border-radius:20px;padding:1px 10px;font-size:.8em;margin-top:2px}
+.badge.wait{background:color-mix(in srgb,var(--wait) 22%,transparent);color:var(--wait);border:1px dashed var(--wait)}
+.dwait{border-inline-start:4px solid var(--wait);padding-inline-start:10px}
+.av{border-radius:50%;object-fit:cover;background:var(--bd);display:grid;place-items:center;font-weight:700;flex:none;overflow:hidden}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:8px}.f label{font-size:.85em;color:var(--mu);display:flex;flex-direction:column;gap:3px}.f .full{grid-column:1/-1}
+.jd{display:grid;grid-template-columns:1.1fr 1.6fr .8fr;gap:6px}.jd select{padding:10px 6px}
+.login{text-align:center;margin-top:5vh}.login .c{text-align:start}
+.lnk{color:var(--ac);text-decoration:underline;cursor:pointer;font-weight:700}
+.w{overflow-x:auto;position:relative}table{border-collapse:collapse;width:100%;font-size:.85em}td,th{padding:7px 5px;text-align:center;border-bottom:1px solid var(--bd);white-space:nowrap}
+tr.me td{background:color-mix(in srgb,var(--ac) 12%,transparent);font-weight:700}
+th.today,td.today{background:var(--today);font-weight:700}
+.lock{font-size:.8em;color:var(--mu)}
+.fire{color:#e8702a;font-weight:700}
+.banner{background:#fff3cd;color:#7a5a00;border-radius:12px;padding:8px 12px;margin:8px 0}
+</style></head><body>
+<div id="app"><div class="c">در حال بارگذاری…</div></div>
+<script>
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
+const SUPABASE_URL = "https://ekmiynpjugfqdnwfofgn.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVrbWl5bnBqdWdmcWRud2ZvZmduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNjU1MTcsImV4cCI6MjEwNzk0MTUxN30.6i1LKuj9KUbJAJ916Yo7AOC-_VtftDpVhdDEeR8f5LA";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = s => document.querySelector(s);
+const fa = n => Number(n).toLocaleString('fa-IR');
+const DAY = 864e5, ms = s => Date.parse(s + 'T00:00:00Z'), str = m => new Date(m).toISOString().slice(0, 10);
+const addDays = (s, n) => str(ms(s) + n * DAY);
+const fd = (s, o) => new Date(ms(s)).toLocaleDateString('fa-IR-u-ca-persian', {timeZone: 'UTC', ...o});
+const todayIn = tz => new Intl.DateTimeFormat('en-CA', {timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit'}).format(new Date());
+const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const normD = s => String(s ?? '').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).trim();
+const emailOf = ph => 'u' + ph + '@wecando.app';
+const PW = pin => 'wcd-' + pin;
+const JM = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+const jParts = new Intl.DateTimeFormat('en-u-ca-persian', {timeZone: 'UTC', year: 'numeric', month: 'numeric', day: 'numeric'});
+function toJal(g) { const p = jParts.formatToParts(new Date(ms(g))); const v = t => +p.find(x => x.type === t).value; return {y: v('year'), m: v('month'), d: v('day')}; }
+function toGreg(y, m, d) {
+  if (!y || !m || !d) return null;
+  const start = ms(`${y + 621}-01-01`);
+  for (let i = 0; i < 520; i++) {
+    const g = str(start + i * DAY), j = toJal(g);
+    if (j.y === y && j.m === m && j.d === d) return g;
+    if (j.y > y || (j.y === y && (j.m > m || (j.m === m && j.d > d)))) return null;
+  }
+  return null;
+}
+function jdSel(p, minY, maxY, defY, greg) {
+  const j = greg ? toJal(greg) : {y: defY, m: 1, d: 1};
+  let ys = ''; for (let y = minY; y <= maxY; y++) ys += `<option value="${y}" ${y === j.y ? 'selected' : ''}>${fa(y)}</option>`;
+  let mo = ''; JM.forEach((n, i) => mo += `<option value="${i + 1}" ${i + 1 === j.m ? 'selected' : ''}>${fa(i + 1)} - ${n}</option>`);
+  let dy = ''; for (let d = 1; d <= 31; d++) dy += `<option value="${d}" ${d === j.d ? 'selected' : ''}>${fa(d)}</option>`;
+  return `<div class="jd"><select id="${p}_y">${ys}</select><select id="${p}_m">${mo}</select><select id="${p}_d">${dy}</select></div>`;
+}
+const jdRead = p => toGreg(+$('#' + p + '_y').value, +$('#' + p + '_m').value, +$('#' + p + '_d').value);
+
+const DEF_LOGO = '<svg viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#2f9e6b"/><path d="M12 20 22 46 32 26 42 46 52 20" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const S = {tab: 'submit', edit: null, viewId: null, ws: null, wid: null, M: null, mode: 'guest', isMember: false, isAdmin: false,
+  isSuper: false, ch: [], cats: [], fields: [], weeks: [], done: new Set(), saved: false, today: null, platformLogo: null, mships: []};
+let legacy = false;
+
+const logo = (n = 40, src) => { const s = src !== undefined ? src : (S.ws?.logo || S.platformLogo); return s ? `<img src="${s}" alt="" style="width:${n}px;height:${n}px;object-fit:contain">` : DEF_LOGO.replace('<svg ', `<svg width="${n}" height="${n}" `); };
+const av = (p, n = 56) => p.avatar ? `<img class="av" src="${p.avatar}" alt="" style="width:${n}px;height:${n}px">` : `<div class="av" style="width:${n}px;height:${n}px">${esc(((p.name || '؟')[0]))}</div>`;
+const nmOf = p => p ? (((p.name || '') + ' ' + (p.last_name || '')).trim() || '—') : '—';
+function notify(t, ok = true) {
+  document.querySelectorAll('.busy').forEach(b => b.classList.remove('busy'));
+  const d = document.createElement('div'); d.className = 'toast msg ' + (ok ? 'ok' : 'err'); d.textContent = t;
+  document.body.appendChild(d); setTimeout(() => d.remove(), 4500);
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('button.p, button[data-b]');
+  if (!b) return;
+  if (b.classList.contains('busy')) { e.stopPropagation(); e.preventDefault(); return; }
+  b.classList.add('busy'); setTimeout(() => b.classList.remove('busy'), 12000);
+}, true);
+function resizeImg(file, max = 256, type = 'image/jpeg') {
+  return new Promise((res, rej) => {
+    const r = new FileReader(); r.onerror = rej;
+    r.onload = () => {
+      const im = new Image(); im.onerror = rej;
+      im.onload = () => {
+        const k = Math.min(1, max / Math.max(im.width, im.height));
+        const c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        res(c.toDataURL(type, .85));
+      };
+      im.src = r.result;
+    };
+    r.readAsDataURL(file);
+  });
+}
+const svg = (p, c = 'currentColor', n = 22) => `<svg width="${n}" height="${n}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const DEF_ICON = '<path d="M4 12h16M12 4v16"/>';
+const chIcon = cat => {
+  const c = cat?.color || '#8a9a90';
+  return `<span class="ib" style="background:${c}22">${cat?.icon ? `<img src="${cat.icon}" alt="">` : svg(DEF_ICON, c)}</span>`;
+};
+const TABI = {
+  submit: '<path d="M5 12l5 5L20 7"/>',
+  board: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
+  hist: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  profile: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',
+  admin: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'};
+const section = (title, items) => `<div class="c"><h3>${title}</h3>${items.length ? items.join('') : '<p class="mu">موردی نیست.</p>'}</div>`;
+const card = (title, sub, action) => `<div class="row"><div><b>${esc(title)}</b><div>${sub}</div></div><div>${action}</div></div>`;
+
+/* ---------- تنظیم‌های لیگ و مراحل ---------- */
+const PROVINCES = ['آذربایجان شرقی','آذربایجان غربی','اردبیل','اصفهان','البرز','ایلام','بوشهر','تهران','چهارمحال و بختیاری','خراسان جنوبی','خراسان رضوی','خراسان شمالی','خوزستان','زنجان','سمنان','سیستان و بلوچستان','فارس','قزوین','قم','کردستان','کرمان','کرمانشاه','کهگیلویه و بویراحمد','گلستان','گیلان','لرستان','مازندران','مرکزی','هرمزگان','همدان','یزد'];
+const FIELDS = {
+  name: {l: 'نام', t: 'text'}, last_name: {l: 'نام خانوادگی', t: 'text'}, nickname: {l: 'نام مستعار', t: 'text'},
+  birth_date: {l: 'تاریخ تولد (شمسی)', t: 'jdate'}, gender: {l: 'جنسیت', t: 'select', o: ['مرد', 'زن']},
+  height: {l: 'قد (cm)', t: 'num'}, weight: {l: 'وزن (kg)', t: 'dec'}, email: {l: 'ایمیل', t: 'email'},
+  province: {l: 'استان', t: 'select', o: PROVINCES}, city: {l: 'شهر', t: 'text'}, location: {l: 'لوکیشن', t: 'text'},
+  job: {l: 'شغل', t: 'text'}, marital_status: {l: 'وضعیت تاهل', t: 'select', o: ['مجرد', 'متاهل']},
+  avatar: {l: 'عکس پروفایل', t: 'file'}, bio: {l: 'درباره من', t: 'area'}};
+const FIELD_KEYS = Object.keys(FIELDS);
+
+function formHtml(keys, reqMap, cur = {}) {
+  return keys.map(k => {
+    const m = FIELDS[k], req = reqMap[k] ? ' <span style="color:#a12a2a">*</span>' : '';
+    let inp = '';
+    if (m.t === 'jdate') inp = jdSel('f_' + k, 1320, 1400, 1370, cur[k]);
+    else if (m.t === 'select') inp = `<select id="f_${k}"><option value="">انتخاب کنید</option>${m.o.map(o => `<option ${cur[k] === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+    else if (m.t === 'area') inp = `<textarea id="f_${k}" rows="3" maxlength="500">${esc(cur[k])}</textarea>`;
+    else if (m.t === 'file') inp = `<input id="f_${k}" type="file" accept="image/*">`;
+    else if (m.t === 'num') inp = `<input id="f_${k}" type="number" inputmode="numeric" step="1" value="${esc(cur[k])}">`;
+    else if (m.t === 'dec') inp = `<input id="f_${k}" type="number" inputmode="decimal" step="0.1" value="${esc(cur[k])}">`;
+    else if (m.t === 'email') inp = `<input id="f_${k}" type="email" dir="ltr" value="${esc(cur[k])}">`;
+    else inp = `<input id="f_${k}" value="${esc(cur[k])}">`;
+    const wide = ['jdate', 'area', 'file'].includes(m.t) ? 'full' : '';
+    return `<div class="${wide}"><div class="mu" style="font-size:.85em">${m.l}${req}</div>${inp}</div>`;
+  }).join('');
+}
+// خواندن فرم؛ اگر مقدار قبلی وجود داشته باشد، خالی بودن الزامی نیست
+async function readForm(keys, reqMap, cur = {}) {
+  const out = {}, miss = [], errs = [];
+  for (const k of keys) {
+    const m = FIELDS[k]; let v = null;
+    if (m.t === 'jdate') v = jdRead('f_' + k);
+    else if (m.t === 'file') { const f = $('#f_' + k).files[0]; if (f) v = await resizeImg(f, 256); }
+    else if (m.t === 'num' || m.t === 'dec') v = normD($('#f_' + k).value) || null;
+    else v = ($('#f_' + k).value || '').trim() || null;
+    if (v === null && cur[k] === undefined && reqMap[k]) miss.push(m.l);
+    if (v !== null) out[k] = v;
+    if (k === 'height' && v && !(Number.isInteger(+v) && +v >= 50 && +v <= 260)) errs.push('قد باید عدد صحیح بین ۵۰ و ۲۶۰ باشد');
+    if (k === 'weight' && v && !(+v >= 20 && +v <= 400)) errs.push('وزن باید بین ۲۰ و ۴۰۰ باشد');
+    if (k === 'email' && v && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) errs.push('ایمیل معتبر نیست');
+    if (k === 'birth_date' && v === null && reqMap[k]) miss.push(m.l);
+  }
+  if (miss.length) errs.unshift('این فیلدها الزامی است: ' + [...new Set(miss)].join('، '));
+  return {data: out, errs};
+}
+
+/* ---------- ورود و ثبت‌نام (جهانی) ---------- */
+function captureJoin() {
+  const t = new URLSearchParams(location.search).get('join');
+  if (t) { localStorage.setItem('wcd_join', t); history.replaceState(null, '', location.pathname); }
+}
+async function boot() {
+  captureJoin();
+  const g = await sb.from('game_settings').select('logo').single();
+  if (!g.error) S.platformLogo = g.data.logo;
+  const {data: {session}} = await sb.auth.getSession();
+  if (!session) return authView('login');
+  const p = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+  if (p.error || !p.data || p.data.status !== 'active') { await sb.auth.signOut(); return authView('login'); }
+  S.uid = session.user.id; S.me = p.data; S.isSuper = !!p.data.is_super;
+  if (localStorage.getItem('wcd_join')) return inviteJoinView(localStorage.getItem('wcd_join'));
+  const mm = await sb.from('memberships').select('workspace_id,role,status,level').eq('user_id', S.uid);
+  if (mm.error) return notify('خطا: ' + mm.error.message, false);
+  S.mships = mm.data || [];
+  const act = S.mships.filter(m => m.status === 'active');
+  if (act.length === 1) return openWs(act[0].workspace_id);
+  wsListView();
+}
+const loginForm = () => legacy ? `<div class="f">
+<label class="full">ایمیل<input id="e_mail" type="email" dir="ltr"></label>
+<label class="full">رمز عبور<input id="e_pw" type="password" dir="ltr"></label></div>
+<button class="p big" style="margin-top:12px" onclick="loginEmail()">ورود</button>
+<button class="ghost2" style="width:100%;margin-top:8px" onclick="legacy=false;authView('login')">ورود با شماره موبایل</button>`
+: `<div class="f">
+<label class="full">شماره موبایل<input id="l_ph" inputmode="numeric" dir="ltr" placeholder="09121234567"></label>
+<label class="full">رمز ۵ رقمی<input id="l_pin" type="password" inputmode="numeric" maxlength="5" dir="ltr"></label></div>
+<button class="p big" style="margin-top:12px" onclick="login()">ورود</button>
+<button class="ghost2" style="width:100%;margin-top:8px" onclick="legacy=true;authView('login')">ورود با ایمیل (حساب‌های قدیمی)</button>`;
+const regForm = () => `<div class="f">
+<label class="full">شماره موبایل ایرانی<input id="r_ph" inputmode="numeric" dir="ltr" placeholder="09121234567"></label>
+<label>رمز ۵ رقمی<input id="r_pin" type="password" inputmode="numeric" maxlength="5" dir="ltr"></label>
+<label>تکرار رمز<input id="r_pin2" type="password" inputmode="numeric" maxlength="5" dir="ltr"></label></div>
+<button class="p big" style="margin-top:12px" onclick="register()">ثبت‌نام</button>
+<p class="mu">شماره و رمز برای ورود به چالشکده است. اطلاعات هر لیگ را بعد از عضویت در آن لیگ وارد می‌کنید.</p>`;
+function authView(mode = 'login') {
+  S.ws = null; S.wid = null;
+  const reg = mode === 'register';
+  $('#app').innerHTML = `<div class="login"><div style="margin:0 auto;width:76px">${logo(76, S.platformLogo)}</div>
+  <h2 style="margin:6px 0 0">چالشکده</h2><div class="mu">${reg ? 'ثبت‌نام' : 'ورود'}</div>
+  <div class="c">${reg ? regForm() : loginForm()}</div>
+  <button class="ghost2" onclick="authView('${reg ? 'login' : 'register'}')">${reg ? 'حساب دارید؟ ورود' : 'عضو نیستید؟ ثبت‌نام'}</button></div>`;
+}
+async function login() {
+  const ph = normD($('#l_ph').value), pin = normD($('#l_pin').value);
+  if (!/^09\d{9}$/.test(ph) || !/^\d{5}$/.test(pin)) return notify('شماره موبایل یا رمز ۵ رقمی درست نیست', false);
+  const {error} = await sb.auth.signInWithPassword({email: emailOf(ph), password: PW(pin)});
+  if (error) return notify('شماره موبایل یا رمز ورود اشتباه است', false);
+  boot();
+}
+async function loginEmail() {
+  const email = $('#e_mail').value.trim(), pw = $('#e_pw').value;
+  if (!email || !pw) return notify('ایمیل و رمز عبور را وارد کنید', false);
+  const {error} = await sb.auth.signInWithPassword({email, password: pw});
+  if (error) return notify('ایمیل یا رمز عبور اشتباه است', false);
+  boot();
+}
+async function register() {
+  const ph = normD($('#r_ph').value), pin = normD($('#r_pin').value), pin2 = normD($('#r_pin2').value);
+  if (!/^09\d{9}$/.test(ph)) return notify('شماره موبایل ایرانی درست نیست (۰۹… و ۱۱ رقم)', false);
+  if (!/^\d{5}$/.test(pin)) return notify('رمز باید ۵ رقم باشد', false);
+  if (pin !== pin2) return notify('تکرار رمز با رمز یکی نیست', false);
+  const {error} = await sb.auth.signUp({email: emailOf(ph), password: PW(pin), options: {data: {first_name: '', last_name: '', phone: ph}}});
+  if (error) return notify(/already/i.test(error.message) ? 'این شماره قبلاً ثبت‌نام کرده است' : 'ثبت‌نام انجام نشد: ' + error.message, false);
+  const li = await sb.auth.signInWithPassword({email: emailOf(ph), password: PW(pin)});
+  if (li.error) { notify('ثبت‌نام انجام شد؛ با شماره و رمز وارد شوید.'); return authView('login'); }
+  notify('ثبت‌نام انجام شد ✅'); boot();
+}
+async function logout() { await sb.auth.signOut(); S.ws = null; S.wid = null; S.mships = []; authView('login'); }
+
+/* ---------- فهرست لیگ‌ها، عضویت، سوپر ادمین ---------- */
+async function wsListView() {
+  S.ws = null; S.wid = null; S.edit = null;
+  const all = (await sb.from('workspaces').select('id,name,visibility,logo,status,code,max_members').order('name')).data || [];
+  const W = {}; all.forEach(w => W[w.id] = w);
+  const mine = {}; S.mships.forEach(m => mine[m.workspace_id] = m);
+  const nameOf = id => W[id]?.name || 'لیگ';
+  const act = S.mships.filter(m => m.status === 'active'), pend = S.mships.filter(m => m.status === 'pending');
+  const past = S.mships.filter(m => ['left', 'removed', 'completed'].includes(m.status));
+  const pub = all.filter(w => w.visibility === 'public' && !mine[w.id]);
+  const roleTag = m => m.role === 'admin' ? '<span class="tag">ادمین</span>' : '<span class="tag">عضو</span>';
+  const pastLabel = {left: 'ترک کرده‌اید', removed: 'از این لیگ حذف شده‌اید', completed: 'مسیر این لیگ را تکمیل کرده‌اید'};
+  let superBlock = '';
+  if (S.isSuper) {
+    const adm = (await sb.from('memberships').select('workspace_id,user_id').eq('role', 'admin').eq('status', 'active')).data || [];
+    const ids = [...new Set(adm.map(a => a.user_id))];
+    const ph = ids.length ? (await sb.from('profiles').select('id,phone').in('id', ids)).data || [] : [];
+    const PH = {}; ph.forEach(p => PH[p.id] = p.phone);
+    const adminOf = {}; adm.forEach(a => adminOf[a.workspace_id] = PH[a.user_id]);
+    superBlock = `<div class="c"><h3>لوگوی چالشکده</h3><div class="row nob" style="justify-content:flex-start">${logo(56, S.platformLogo)}
+      <input type="file" accept="image/*" onchange="setPlatformLogo(this)" style="width:auto"></div></div>
+    <div class="c"><h3>ساخت لیگ جدید</h3><div class="f">
+      <label class="full">نام لیگ<input id="n_name"></label>
+      <label>نوع<select id="n_vis"><option value="public">عمومی</option><option value="private">خصوصی</option></select></label>
+      <label>تعداد مراحل (هفته)<input id="n_periods" type="number" min="1" value="12"></label>
+      <label>ظرفیت اعضا<input id="n_max" type="number" min="1" value="30"></label>
+      <div class="full"><div class="mu" style="font-size:.85em">شنبه‌ی اولین مرحله (شمسی)</div>${jdSel('n_s', 1405, 1410, 1405)}</div>
+      <label class="full">شماره موبایل ادمین لیگ<input id="n_phone" inputmode="numeric" dir="ltr"></label></div>
+      <button class="p big" style="margin-top:10px" onclick="createWs()">ساخت لیگ</button></div>
+    <div class="c"><h3>همه لیگ‌ها</h3>${all.map(w => `<div class="row"><div><b>${esc(w.name)}</b> <span class="tag">${esc(w.code)}</span>
+      <div class="mu">${w.visibility === 'public' ? 'عمومی' : 'خصوصی'} · ${w.status === 'active' ? 'فعال' : w.status === 'stopped' ? 'متوقف' : 'پایان‌یافته'} · ظرفیت ${fa(w.max_members)} · ادمین: <span dir="ltr">${esc(adminOf[w.id] || '—')}</span></div></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="small" onclick="openWs('${w.id}')">ورود</button>
+      ${w.status === 'stopped' ? `<button class="small" onclick="setStatus('${w.id}','active')">فعال‌سازی</button>` : w.status === 'active' ? `<button class="small" onclick="setStatus('${w.id}','stopped')">توقف</button>` : ''}
+      <button class="small" onclick="changeMax('${w.id}',${w.max_members})">ظرفیت</button></div></div>`).join('')}</div>`;
+  }
+  $('#app').innerHTML = `<div class="top">${logo(30, S.platformLogo)}<span>چالشکده</span><span style="margin-inline-start:auto">${installBtn()}<button class="ghost2 small" onclick="logout()">خروج</button></span></div>
+  <div class="hero"><div><h1>سلام ${esc(nmOf(S.me))} 👋</h1><div class="mu2">لیگ‌های خود را انتخاب کنید</div></div></div>
+  ${section('لیگ‌های من', act.map(m => card(nameOf(m.workspace_id), roleTag(m), `<button class="p small" onclick="openWs('${m.workspace_id}')">ورود</button>`)))}
+  ${section('در انتظار تایید', pend.map(m => card(nameOf(m.workspace_id), '<span class="badge wait">در انتظار تایید ادمین</span>', '')))}
+  ${section('سوابق', past.map(m => card(nameOf(m.workspace_id), `<span class="mu">${pastLabel[m.status]}</span>`, `<button class="small" onclick="openWs('${m.workspace_id}')">مشاهده سوابق</button>`)))}
+  ${section('لیگ‌های عمومی', pub.map(w => card(w.name, '<span class="mu">عضویت با درخواست</span>', `<button class="p small" onclick="joinForm('${w.id}')">درخواست عضویت</button>`)))}
+  <div class="c"><h3>ورود با لینک دعوت</h3><input id="inv" placeholder="لینک دعوت را اینجا بچسبانید" dir="ltr">
+  <button class="p big" style="margin-top:8px" onclick="inviteFromInput()">ادامه</button></div>
+  ${superBlock}`;
+}
+function inviteFromInput() {
+  const v = $('#inv').value.trim(); if (!v) return notify('لینک دعوت را وارد کنید', false);
+  const m = v.match(/join=([a-zA-Z0-9]+)/); inviteJoinView(m ? m[1] : v);
+}
+async function joinForm(wsId) {
+  const {data, error} = await sb.rpc('join_form_info', {p_ws: wsId});
+  if (error || !data) return notify(error?.message || 'این لیگ در دسترس نیست', false);
+  const reqMap = {}; data.fields.forEach(f => reqMap[f.key] = f.required);
+  const keys = data.fields.map(f => f.key);
+  $('#app').innerHTML = `<div class="top"><span>${esc(data.name)}</span><span style="margin-inline-start:auto"><button class="ghost2 small" onclick="wsListView()">بازگشت</button></span></div>
+  <div class="c"><h3>اطلاعات شما برای این لیگ</h3><div class="f">${formHtml(keys, reqMap)}</div>
+  <button class="p big" style="margin-top:12px" onclick="submitJoin()">درخواست عضویت</button></div>`;
+  S.join = {wsId, keys, reqMap, token: null};
+}
+async function inviteJoinView(token) {
+  const {data, error} = await sb.rpc('invite_preview', {p_token: token});
+  if (error || !data) { localStorage.removeItem('wcd_join'); notify('لینک دعوت معتبر نیست یا منقضی شده است', false); return wsListViewSafe(); }
+  const reqMap = {}; data.fields.forEach(f => reqMap[f.key] = f.required);
+  const keys = data.fields.map(f => f.key);
+  S.join = {wsId: data.id, keys, reqMap, token};
+  $('#app').innerHTML = `<div class="top"><span>${esc(data.name)}</span></div>
+  <div class="c"><h3>دعوت به ${esc(data.name)}</h3><p class="mu">برای ورود به لیگ، اطلاعات زیر را تکمیل کنید.</p><div class="f">${formHtml(keys, reqMap)}</div>
+  <button class="p big" style="margin-top:12px" onclick="submitJoin()">عضویت</button>
+  <button class="ghost2" style="width:100%;margin-top:6px" onclick="localStorage.removeItem('wcd_join');boot()">انصراف</button></div>`;
+}
+async function wsListViewSafe() { const mm = await sb.from('memberships').select('workspace_id,role,status,level').eq('user_id', S.uid); S.mships = mm.data || []; wsListView(); }
+async function submitJoin() {
+  const {wsId, keys, reqMap, token} = S.join;
+  const {data, errs} = await readForm(keys, reqMap);
+  if (errs.length) return notify(errs[0], false);
+  const rpc = token ? sb.rpc('join_by_invite', {p_token: token, p_profile: data})
+                    : sb.rpc('join_public_workspace', {p_ws: wsId, p_profile: data});
+  const {data: res, error} = await rpc;
+  if (error) return notify(error.message, false);
+  if (token) localStorage.removeItem('wcd_join');
+  notify(token || res === 'active' ? 'عضو لیگ شدید ✅' : 'درخواست شما ثبت شد و منتظر تایید ادمین است.');
+  boot();
+}
+async function createWs() {
+  const name = $('#n_name').value.trim(), vis = $('#n_vis').value, start = jdRead('n_s');
+  const periods = +normD($('#n_periods').value), max = +normD($('#n_max').value), ph = normD($('#n_phone').value);
+  const miss = [];
+  if (!name) miss.push('نام لیگ'); if (!start) miss.push('تاریخ شروع'); if (!(periods >= 1)) miss.push('تعداد مراحل');
+  if (!(max >= 1)) miss.push('ظرفیت'); if (!/^09\d{9}$/.test(ph)) miss.push('شماره ادمین');
+  if (miss.length) return notify('این موارد درست نیست: ' + miss.join('، '), false);
+  const {error} = await sb.rpc('create_workspace', {p_name: name, p_visibility: vis, p_start: start, p_periods: periods, p_max: max, p_admin_phone: ph});
+  if (error) return notify(error.message, false);
+  notify('لیگ ساخته شد ✅'); boot();
+}
+async function setStatus(id, st) {
+  const {error} = await sb.rpc('set_workspace_status', {p_ws: id, p_status: st});
+  notify(error ? error.message : (st === 'active' ? 'لیگ فعال شد؛ مرحله جاری از نو شروع شد.' : 'لیگ متوقف شد.'), !error); boot();
+}
+async function changeMax(id, cur) {
+  const v = normD(prompt('ظرفیت جدید (فعلی: ' + cur + ')', cur)); if (!v) return;
+  const {error} = await sb.rpc('set_max_members', {p_ws: id, p_n: +v});
+  notify(error ? error.message : 'ظرفیت تغییر کرد ✅', !error); boot();
+}
+async function setPlatformLogo(inp) {
+  const f = inp.files[0]; if (!f) return;
+  try {
+    const data = await resizeImg(f, 256, 'image/png');
+    const {error} = await sb.from('game_settings').update({logo: data}).eq('id', 1);
+    if (error) throw error;
+    notify('لوگو تغییر کرد ✅'); boot();
+  } catch (e) { notify('لوگو ذخیره نشد: ' + (e.message || e), false); }
+}
+
+/* ---------- قاب لیگ ---------- */
+async function openWs(id, tab) {
+  const {data: w, error} = await sb.from('workspaces').select('*').eq('id', id).single();
+  if (error || !w) return notify('این لیگ در دسترس نیست', false);
+  const mm = await sb.from('memberships').select('*').eq('workspace_id', id).eq('user_id', S.uid).maybeSingle();
+  const M = mm.data || null;
+  S.ws = w; S.wid = id; S.M = M; S.edit = null;
+  S.isMember = !!M && M.status === 'active';
+  S.mode = S.isMember ? 'member' : (M ? 'archive' : 'guest');
+  S.isAdmin = S.isSuper || (S.isMember && M.role === 'admin');
+  S.today = todayIn(w.tz);
+  const [ch, cats, wk, fl, sub] = await Promise.all([
+    sb.from('challenges').select('*').eq('workspace_id', id).order('level').order('id'),
+    sb.from('categories').select('*').eq('workspace_id', id).order('name'),
+    sb.from('calendar_weeks').select('*').eq('workspace_id', id).order('week_number'),
+    sb.from('workspace_profile_fields').select('*').eq('workspace_id', id),
+    S.isMember ? sb.from('submissions').select('challenge_id,completed').eq('workspace_id', id).eq('member_id', S.uid).eq('activity_date', S.today) : Promise.resolve({data: []})]);
+  if (ch.error || wk.error) return notify('خطا در دریافت اطلاعات لیگ', false);
+  S.ch = (ch.data || []).filter(c => !c.deleted_at);
+  S.cats = cats.data || []; S.weeks = wk.data || []; S.fields = fl.data || [];
+  S.done = new Set((sub.data || []).filter(r => r.completed).map(r => r.challenge_id));
+  S.saved = (sub.data || []).length > 0;
+  applyPalette(w.palette);
+  S.tab = tab || (S.mode === 'archive' ? 'hist' : S.isMember ? 'submit' : 'board');
+  render();
+}
+function reload() { return openWs(S.wid, S.tab); }
+function applyPalette(p) {
+  const r = document.documentElement.style;
+  r.setProperty('--ac', p?.primary || '#2f9e6b'); r.setProperty('--ac2', p?.dark || '#1f7a52');
+}
+// دوره جاری (مرحله‌ی ۷ روزه‌ای که امروز در آن است؛ اگر نیست، نزدیک‌ترین)
+function curPeriod() {
+  const open = S.weeks.filter(w => w.status !== 'closed');
+  return S.weeks.find(w => w.start_date <= S.today && S.today <= w.end_date)
+      || open.find(w => w.start_date > S.today) || S.weeks[S.weeks.length - 1] || null;
+}
+const lvlChallenges = L => S.ch.filter(c => c.level === L && c.is_active);
+const lvlSum = L => lvlChallenges(L).reduce((s, c) => s + c.base_points, 0);
+const lvlBonus = L => S.ws.bonus_enabled ? Math.floor(lvlSum(L) * S.ws.bonus_percent / 100) : 0;
+const lvlWin = L => Math.round((lvlSum(L) + lvlBonus(L)) * 7 * S.ws.win_percent / 100);
+const topLevel = () => S.ch.reduce((m, c) => Math.max(m, c.level), 0);
+
+function render() {
+  const tabs = [];
+  if (S.mode === 'member') tabs.push(['submit', 'ثبت امروز'], ['board', 'لیگ'], ['hist', 'تاریخچه'], ['profile', 'پروفایل']);
+  else if (S.mode === 'archive') tabs.push(['hist', 'سوابق'], ['profile', 'پروفایل']);
+  else tabs.push(['board', 'لیگ']);
+  if (S.isAdmin) tabs.push(['admin', 'مدیریت']);
+  if (!tabs.some(t => t[0] === S.tab)) S.tab = tabs[0][0];
+  const banner = S.ws.status === 'stopped' ? '<div class="banner">این لیگ متوقف شده است.</div>'
+    : S.ws.status === 'finished' ? '<div class="banner">این لیگ به پایان رسیده است.</div>' : '';
+  const p = S.M?.profile || {};
+  $('#app').innerHTML = `<div class="top">${logo(30)}<span>${esc(S.ws.name)}</span>
+  <span style="margin-inline-start:auto;display:flex;gap:6px">${installBtn()}<button class="ghost2 small" onclick="wsListView()">⇄ لیگ‌ها</button></span></div>
+  <div class="hero"><div><div class="mu2">${fd(S.today, {weekday: 'long', day: 'numeric', month: 'long'})}</div>
+  <h1>سلام ${esc(nmOf(p))} 👋</h1>${S.mode === 'member' ? `<div class="mu2">سطح ${fa(S.M.level)}</div>` : ''}</div>
+  <button class="ghost" data-b onclick="logout()">خروج</button></div>
+  ${banner}<div id="main"></div>
+  <nav class="tabs">${tabs.map(([k, v]) => `<button class="${S.tab === k ? 'on' : ''}" onclick="go('${k}')">${svg(TABI[k])}<span>${v}</span></button>`).join('')}</nav>`;
+  ({submit: submitView, board: boardView, hist: histView, profile: profileView, admin: adminView})[S.tab]();
+}
+function go(k) { S.tab = k; if (k !== 'profile') S.viewId = null; S.edit = null; render(); }
+function openProfile(id) { S.viewId = id; go('profile'); }
+
+/* ---------- ثبت امروز ---------- */
+function submitView() {
+  const L = S.M.level, a = lvlChallenges(L), P = curPeriod();
+  const inPeriod = P && P.start_date <= S.today && S.today <= P.end_date;
+  const notStarted = S.M.active_from && S.M.active_from > S.today;
+  const catOf = c => S.cats.find(k => k.id === c.category_id);
+  $('#main').innerHTML = `<div id="sum"></div>
+  ${notStarted ? `<div class="c"><b>ثبت شما از ${fd(S.M.active_from, {day: 'numeric', month: 'long'})} شروع می‌شود.</b></div>` : ''}
+  ${!inPeriod && !notStarted ? '<div class="c mu">امروز در هیچ مرحله‌ای از این لیگ نیست.</div>' : ''}
+  <div class="c"><div class="mu">چالش‌های امروز (سطح ${fa(L)}) — <b>${fd(S.today, {weekday: 'long', day: 'numeric', month: 'long'})}</b></div>
+  ${a.map(c => `<label class="ch"><input type="checkbox" value="${c.id}" ${S.done.has(c.id) ? 'checked' : ''} onchange="tot()">${chIcon(catOf(c))}
+    <span class="ct">${esc(c.title)}<small>${catOf(c) ? esc(catOf(c).name) : ''}${c.link ? ` · <a href="${esc(c.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">توضیح بیشتر</a>` : ''}</small></span>
+    <b class="pt">+${fa(c.base_points)}</b></label>`).join('')}
+  <p id="tot"></p>
+  ${inPeriod && !notStarted ? `<button class="p big" onclick="save()">${S.saved ? 'بروزرسانی فعالیت امروز' : 'ثبت فعالیت امروز'}</button>` : ''}
+  <p class="mu">ثبت فقط برای امروز است. برای روزهای گذشته از تب تاریخچه استفاده کنید.</p></div>`;
+  tot(); summary();
+}
+function tot() {
+  const L = S.M.level, a = lvlChallenges(L), ck = [...document.querySelectorAll('.ch input:checked')].map(i => i.value);
+  const done = a.filter(c => ck.includes(c.id)), base = done.reduce((s, c) => s + c.base_points, 0);
+  const all = a.length && done.length === a.length, bonus = all && S.ws.bonus_enabled ? lvlBonus(L) : 0;
+  $('#tot').innerHTML = `<span class="chip">پایه ${fa(base)}</span><span class="chip">پاداش ${fa(bonus)}</span><b class="sum">مجموع ${fa(base + bonus)}</b>`;
+}
+async function summary() {
+  const P = curPeriod(); if (!P) return;
+  const {data} = await sb.from('daily_scores').select('activity_date,daily_total').eq('workspace_id', S.wid).eq('member_id', S.uid)
+    .gte('activity_date', P.start_date).lte('activity_date', P.end_date);
+  const score = (data || []).reduce((s, r) => s + r.daily_total, 0), th = lvlWin(S.M.level);
+  const pct = th ? Math.min(100, Math.round(score / th * 100)) : 0;
+  const el = $('#sum'); if (!el) return;
+  el.innerHTML = `<div class="c stat"><div class="ring" style="--p:${pct}"><b>${fa(pct)}٪</b></div><div>
+  <div class="mu">امتیاز این مرحله</div><div class="big2">${fa(score)} <small>از امتیاز پیروزی ${fa(th)}</small></div>
+  <div class="mu">🔥 تداوم فعلی: <b>${fa(S.M.current_streak)}</b> روز</div></div></div>`;
+}
+async function save() {
+  const ck = [...document.querySelectorAll('.ch input:checked')].map(i => i.value);
+  const {error} = await sb.rpc('submit_today', {p_ws: S.wid, p_done: ck});
+  if (error) return notify('ثبت انجام نشد: ' + error.message, false);
+  const a = lvlChallenges(S.M.level), all = a.length && a.every(c => ck.includes(c.id));
+  notify(all ? 'عالی! امروز همه چالش‌ها کامل شد 🎉' : 'ثبت شد ✅');
+  reload();
+}
+
+/* ---------- لیدربورد: ستون‌های روزهای دوره‌ی جاری ---------- */
+async function boardView() {
+  const P = curPeriod();
+  const {data, error} = await sb.rpc('get_scores', {p_ws: S.wid, p_from: P ? P.start_date : S.today});
+  if (error) return $('#main').innerHTML = `<div class="msg err">${esc(error.message)}</div>`;
+  const days = P ? [...Array(7)].map((_, i) => addDays(P.start_date, i)) : [];
+  const by = {};
+  (data || []).forEach(r => {
+    (by[r.member_id] ??= {id: r.member_id, name: r.name, level: r.level, d: {}});
+    if (r.activity_date) by[r.member_id].d[r.activity_date] = r.daily_total;
+  });
+  const rows = Object.values(by).map(m => {
+    const total = days.reduce((s, x) => s + (m.d[x] || 0), 0);
+    return {...m, total};
+  }).sort((a, b) => b.total - a.total);
+  rows.forEach((r, i) => r.rank = i && r.total === rows[i - 1].total ? rows[i - 1].rank : i + 1);
+  const heading = P ? `${fd(P.start_date, {day: 'numeric', month: 'long'})} تا ${fd(P.end_date, {day: 'numeric', month: 'long'})}` : '—';
+  $('#main').innerHTML = `<div class="c">
+  <div class="row nob" style="padding:0"><div><h3 style="margin:0">جدول لیگ ${esc(S.ws.name)}</h3><div class="mu">${heading}</div></div>
+  <button class="icon" onclick="boardView()" title="به‌روزرسانی" aria-label="به‌روزرسانی">${svg('<path d="M21 12a9 9 0 1 1-2.6-6.3M21 4v5h-5"/>')}</button></div>
+  <div class="w" id="tw" style="margin-top:10px"><table><tr><th>رتبه</th><th>نام</th><th>سطح</th>
+  ${days.map(d => `<th class="${d === S.today ? 'today' : ''}" ${d === S.today ? 'id="todayTh"' : ''}>${fd(d, {weekday: 'long'})}</th>`).join('')}
+  <th>جمع مرحله</th></tr>
+  ${rows.map(r => `<tr class="${r.id === S.uid ? 'me' : ''}"><td>${['🥇', '🥈', '🥉'][r.rank - 1] || fa(r.rank)}</td>
+  <td><span class="lnk" onclick="openProfile('${r.id}')">${esc(r.name)}</span></td><td>${fa(r.level)}</td>
+  ${days.map(d => `<td class="${d === S.today ? 'today' : ''}">${r.d[d] !== undefined ? fa(r.d[d]) : ''}</td>`).join('')}
+  <td><b>${fa(r.total)}</b></td></tr>`).join('')}</table></div></div>`;
+  const t = $('#todayTh'), w = $('#tw'); if (t && w) w.scrollLeft = t.offsetLeft - w.clientWidth / 2;
+}
+
+/* ---------- تاریخچه و ویرایش روزهای گذشته ---------- */
+async function histView() {
+  const m = $('#main'), P = curPeriod();
+  const from = S.M.active_from || S.today;
+  const days = [];
+  for (let d = addDays(S.today, -1); d >= from && days.length < 60; d = addDays(d, -1)) days.push(d);
+  const [sc, pend] = await Promise.all([
+    sb.from('daily_scores').select('activity_date,daily_total,all_challenges_completed').eq('workspace_id', S.wid).eq('member_id', S.uid).gte('activity_date', from),
+    sb.from('day_edit_requests').select('activity_date').eq('workspace_id', S.wid).eq('member_id', S.uid).eq('status', 'pending')]);
+  const sMap = {}; (sc.data || []).forEach(r => sMap[r.activity_date] = r);
+  const pSet = new Set((pend.data || []).map(r => r.activity_date));
+  const canEdit = S.mode === 'member';
+  const editable = d => canEdit && P && d >= P.start_date && d <= P.end_date && d < S.today && P.status !== 'closed';
+  m.innerHTML = (S.edit && canEdit ? editCard() : '') + `<div class="c"><h3>روزهای عضویت شما</h3>
+  <p class="mu">عضو از ${fd(from, {day: 'numeric', month: 'long', year: 'numeric'})} · ${fa(Math.max(1, Math.round((ms(S.today) - ms(from)) / DAY) + 1))} روز</p>
+  <p class="mu">ویرایش فقط برای روزهای مرحله جاری است و پس از تایید ادمین اعمال می‌شود.</p>
+  ${days.length ? days.map(d => {
+    const r = sMap[d], waiting = pSet.has(d);
+    return `<div class="row ${waiting ? 'dwait' : ''}"><div><div>${fd(d, {weekday: 'long', day: 'numeric', month: 'long'})}</div>
+    ${waiting ? '<span class="badge wait">در حال تایید</span>' : ''}</div>
+    <div style="text-align:end"><div>${r ? `<b>${fa(r.daily_total)}</b> امتیاز${r.all_challenges_completed ? ' ✅' : ''}` : '<span class="mu">ثبت نشده</span>'}</div>
+    ${editable(d) ? `<button class="ghost2 small" onclick="startEdit('${d}')">ویرایش</button>` : ''}</div></div>`;
+  }).join('') : '<p class="mu">هنوز روزی ثبت نشده است.</p>'}</div>`;
+}
+async function startEdit(d) {
+  const {data} = await sb.from('submissions').select('challenge_id,completed').eq('workspace_id', S.wid).eq('member_id', S.uid).eq('activity_date', d);
+  S.edit = {date: d, done: new Set((data || []).filter(r => r.completed).map(r => r.challenge_id))};
+  histView(); window.scrollTo(0, 0);
+}
+function editCard() {
+  const e = S.edit, a = lvlChallenges(S.M.level);
+  return `<div class="c" style="border-color:var(--ac)"><h3>ویرایش ${fd(e.date, {weekday: 'long', day: 'numeric', month: 'long'})}</h3>
+  ${a.map(c => `<label class="ch"><input type="checkbox" value="${c.id}" ${e.done.has(c.id) ? 'checked' : ''}>${chIcon(S.cats.find(k => k.id === c.category_id))}<span class="ct">${esc(c.title)}</span><b class="pt">+${fa(c.base_points)}</b></label>`).join('')}
+  <button class="p big" onclick="sendEdit()">ارسال درخواست ویرایش</button>
+  <button class="ghost2" style="width:100%;margin-top:6px" onclick="S.edit=null;histView()">انصراف</button></div>`;
+}
+async function sendEdit() {
+  const ck = [...document.querySelectorAll('#main .ch input:checked')].map(i => i.value), d = S.edit.date;
+  const {error} = await sb.rpc('request_day_edit', {p_ws: S.wid, p_date: d, p_done: ck});
+  if (error) return notify('ارسال نشد: ' + error.message, false);
+  S.edit = null; notify('درخواست ویرایش برای ادمین ارسال شد و پس از تایید اعمال می‌شود.'); histView();
+}
+
+/* ---------- پروفایل ---------- */
+async function profileView() {
+  const id = S.viewId || S.uid, mine = id === S.uid, m = $('#main');
+  const {data: p, error} = await sb.rpc('get_member_profile', {p_id: id, p_ws: S.wid});
+  if (error || !p) return m.innerHTML = `<div class="c">${error ? esc(error.message) : 'این عضو در این لیگ پیدا نشد.'}</div>`;
+  const pr = p.profile || {};
+  const hist = (p.history || []).map(h => `<div class="row"><span>سطح ${fa(h.level)}</span><span class="mu">${fa(h.score)} از ${fa(h.threshold)} — ${esc(h.result)}</span></div>`).join('');
+  const head = `<div class="c" style="text-align:center">${av({...pr, avatar: pr.avatar}, 96)}
+    <h2 style="margin:8px 0 2px">${esc(nmOf(pr))}</h2>
+    <div><span class="chip">سطح ${fa(p.level)}</span>${p.status === 'completed' ? '<span class="tag">مسیر تکمیل شد</span>' : ''}</div>
+    ${p.joined_at ? `<div class="mu">عضو از ${fd(p.joined_at.slice(0, 10), {day: 'numeric', month: 'long', year: 'numeric'})}</div>` : ''}
+    ${pr.bio ? `<p>${esc(pr.bio)}</p>` : ''}
+    <div class="stat" style="justify-content:center;margin-top:8px">
+      <div><div class="big2">${fa(p.total)}</div><div class="mu">امتیاز کل</div></div>
+      <div><div class="big2">${fa(p.rank)}</div><div class="mu">رتبه در لیگ</div></div>
+      <div><div class="big2 fire">🔥 ${fa(p.best_streak)}</div><div class="mu">بیشترین تداوم</div></div></div></div>
+    ${hist ? `<div class="c"><h3>سابقه مراحل</h3>${hist}</div>` : ''}`;
+  if (!mine) return m.innerHTML = head + `<button onclick="go('board')">بازگشت به لیگ</button>`;
+  const cur = {...pr}; const keys = S.fields.filter(f => f.required || f.visible || true).map(f => f.field_key);
+  const reqMap = {}; S.fields.forEach(f => reqMap[f.field_key] = f.required);
+  m.innerHTML = head + `<div class="c"><h3>ویرایش اطلاعات این لیگ</h3><div class="f">${formHtml(keys, reqMap, cur)}</div>
+    <button class="p big" style="margin-top:12px" onclick="saveProfile()">ذخیره تغییرات</button></div>
+    <div class="c"><h3>رمز ورود</h3><div class="f"><label class="full">رمز جدید ۵ رقمی (اختیاری)<input id="p_pin" type="password" inputmode="numeric" maxlength="5" dir="ltr"></label></div>
+    <button onclick="changePin()">تغییر رمز</button></div>
+    ${S.isMember ? `<div class="c"><h3>عضویت این لیگ</h3><p class="mu">با خروج، سوابق شما باقی می‌ماند و بعداً می‌توانید دوباره عضو شوید.</p>
+    <button class="danger" onclick="leaveWs()">خروج از این لیگ</button></div>` : ''}`;
+}
+async function saveProfile() {
+  const keys = S.fields.map(f => f.field_key), reqMap = {}; S.fields.forEach(f => reqMap[f.field_key] = f.required);
+  const cur = S.M.profile || {};
+  const {data, errs} = await readForm(keys, reqMap, cur);
+  if (errs.length) return notify(errs[0], false);
+  const {error} = await sb.rpc('update_member_profile', {p_ws: S.wid, p_profile: data});
+  if (error) return notify('ذخیره نشد: ' + error.message, false);
+  notify('ذخیره شد ✅'); reload();
+}
+async function changePin() {
+  const pin = normD($('#p_pin').value);
+  if (!/^\d{5}$/.test(pin)) return notify('رمز باید ۵ رقم باشد', false);
+  const {error} = await sb.auth.updateUser({password: PW(pin)});
+  notify(error ? error.message : 'رمز تغییر کرد ✅', !error);
+}
+async function leaveWs() {
+  if (!confirm('از این لیگ خارج می‌شوید؟ سوابق شما باقی می‌ماند.')) return;
+  const {error} = await sb.rpc('leave_workspace', {p_ws: S.wid});
+  if (error) return notify(error.message, false);
+  notify('از لیگ خارج شدید.'); boot();
+}
+
+/* ---------- مدیریت لیگ ---------- */
+const LEVEL_OK = () => {
+  const top = topLevel(); const probs = [];
+  if (!top) return ['هیچ چالشی تعریف نشده است'];
+  for (let g = 1; g <= top; g++) {
+    if (!lvlChallenges(g).length) probs.push(`سطح ${fa(g)} چالش فعال ندارد`);
+    else if (g > 1 && lvlSum(g) !== lvlSum(1)) probs.push(`جمع امتیاز سطح ${fa(g)} (${fa(lvlSum(g))}) باید برابر سطح ۱ (${fa(lvlSum(1))}) باشد`);
+  }
+  return probs;
+};
+async function adminView() {
+  const wid = S.wid;
+  const [pm, mem, de, iv] = await Promise.all([
+    sb.from('memberships').select('user_id,profile,status').eq('workspace_id', wid).eq('status', 'pending'),
+    sb.from('memberships').select('user_id,role,level,profile,joined_at,status').eq('workspace_id', wid).in('status', ['active', 'completed']),
+    sb.from('day_edit_requests').select('*').eq('workspace_id', wid).eq('status', 'pending').order('created_at'),
+    sb.from('workspace_invites').select('*').eq('workspace_id', wid).order('created_at', {ascending: false})]);
+  const pendM = pm.data || [], actM = mem.data || [], pendD = de.data || [], invites = iv.data || [];
+  const nameById = {}; [...pendM, ...actM].forEach(x => nameById[x.user_id] = nmOf(x.profile));
+  const probs = LEVEL_OK();
+  const ws = S.ws;
+  const palette = ws.palette || {};
+  $('#main').innerHTML = `
+  ${section(`درخواست عضویت (${fa(pendM.length)})`, pendM.map(x => { const p = x.profile || {}; return `<div class="c" style="margin:8px 0">
+    <div class="row nob" style="justify-content:flex-start">${av(p, 48)}<b>${esc(nmOf(p))}</b></div>
+    <div class="mu">${Object.entries(p).filter(([k]) => k !== 'avatar').map(([k, v]) => `${FIELDS[k]?.l || k}: ${k === 'birth_date' ? fd(v, {year: 'numeric', month: 'long', day: 'numeric'}) : esc(v)}`).join(' · ')}</div>
+    <div style="display:flex;gap:8px;margin-top:6px"><button class="p small" onclick="decideMember('${x.user_id}',true)">تایید</button><button class="small" onclick="decideMember('${x.user_id}',false)">رد</button></div></div>`; }))}
+  ${section(`اعضای فعال (${fa(actM.filter(x => x.status === 'active').length)} از ${fa(ws.max_members)})`, actM.map(x => `<div class="row">
+    <div><b>${esc(nmOf(x.profile))}</b> ${x.role === 'admin' ? '<span class="tag">ادمین</span>' : ''} ${x.status === 'completed' ? '<span class="tag">تکمیل‌شده</span>' : ''}
+    <div class="mu">سطح ${fa(x.level)} · عضو از ${fd(x.joined_at.slice(0, 10), {day: 'numeric', month: 'long'})}</div></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">${x.status === 'active' ? `<button class="small" onclick="setRole('${x.user_id}','${x.role === 'admin' ? 'member' : 'admin'}')">${x.role === 'admin' ? 'عضو کردن' : 'ادمین کردن'}</button>
+    <button class="small danger" onclick="removeMem('${x.user_id}')">اخراج</button>` : ''}</div></div>`))}
+  ${section(`درخواست ویرایش روزها (${fa(pendD.length)})`, pendD.map(r => `<div class="row" style="align-items:flex-start">
+    <div><b>${esc(nameById[r.member_id] || '—')}</b><div class="mu">${fd(r.activity_date, {weekday: 'long', day: 'numeric', month: 'long'})} · سطح ${fa(r.level)}</div>
+    <div class="mu">پیشنهاد: ${(r.proposed_done || []).map(id => S.ch.find(c => c.id === id)?.title).filter(Boolean).map(esc).join('، ') || 'هیچ‌کدام'}</div></div>
+    <div style="display:flex;gap:6px"><button class="p small" onclick="decideEdit(${r.id},true)">تایید</button><button class="small" onclick="decideEdit(${r.id},false)">رد</button></div></div>`))}
+  <div class="c"><h3>دعوت خصوصی</h3>
+  <div class="f"><label>مدت اعتبار (روز، خالی = بدون انقضا)<input id="iv_d" type="number" min="1"></label>
+  <label>تعداد دفعات (خالی = نامحدود)<input id="iv_m" type="number" min="1"></label></div>
+  <button class="p big" style="margin-top:10px" onclick="makeInvite()">ساخت لینک دعوت</button>
+  ${invites.map(i => `<div class="row"><div class="mu" dir="ltr" style="font-size:.8em">${esc(location.origin + location.pathname)}?join=${esc(i.token).slice(0, 8)}…</div>
+    <div style="display:flex;gap:6px"><span class="mu">${i.revoked ? 'غیرفعال' : 'فعال'} · ${fa(i.uses)} بار</span>
+    <button class="small" onclick="toggleInvite('${i.token}',${i.revoked})">${i.revoked ? 'فعال‌سازی' : 'غیرفعال‌سازی'}</button></div></div>`).join('')}
+  <input id="iv_out" readonly dir="ltr" style="margin-top:8px;display:none"></div>
+  <div class="c"><h3>تنظیمات لیگ</h3>
+  <label class="mu">نام لیگ<input id="ws_name" value="${esc(ws.name)}"></label>
+  <label class="mu" style="margin-top:6px">نوع لیگ<select id="ws_vis"><option value="public" ${ws.visibility === 'public' ? 'selected' : ''}>عمومی</option><option value="private" ${ws.visibility === 'private' ? 'selected' : ''}>خصوصی</option></select></label>
+  <label class="mu" style="margin-top:6px">عضویت بدون تایید ادمین<select id="ws_auto"><option value="false" ${!ws.auto_approve ? 'selected' : ''}>خیر</option><option value="true" ${ws.auto_approve ? 'selected' : ''}>بله</option></select></label>
+  <label class="mu" style="margin-top:6px">پاداش روزانه<select id="ws_bonus"><option value="true" ${ws.bonus_enabled ? 'selected' : ''}>روشن</option><option value="false" ${!ws.bonus_enabled ? 'selected' : ''}>خاموش</option></select></label>
+  <div class="f" style="margin-top:6px"><label>درصد پاداش<input id="ws_bp" type="number" min="0" max="100" value="${ws.bonus_percent}"></label>
+  <label>درصد امتیاز پیروزی<input id="ws_wp" type="number" min="1" max="100" value="${ws.win_percent}"></label></div>
+  <div class="f" style="margin-top:6px"><label>رنگ اصلی<input id="ws_c1" type="color" value="${palette.primary || '#2f9e6b'}"></label>
+  <label>رنگ تیره<input id="ws_c2" type="color" value="${palette.dark || '#1f7a52'}"></label></div>
+  <button class="p big" style="margin-top:8px" onclick="saveWs()">ذخیره تنظیمات</button>
+  <div class="row" style="margin-top:8px"><div>${logo(56)}</div><input type="file" accept="image/*" onchange="setLogo(this)" style="width:auto"></div></div>
+  <div class="c"><h3>فیلدهای پروفایل این لیگ</h3><p class="mu">برای هر فیلد مشخص کنید اجباری باشد یا برای بقیه اعضا قابل مشاهده باشد.</p>
+  ${FIELD_KEYS.map(k => { const f = S.fields.find(x => x.field_key === k) || {}; return `<div class="row">
+    <span>${FIELDS[k].l}</span><span style="display:flex;gap:10px">
+    <label><input type="checkbox" id="fr_${k}" style="width:auto" ${f.required ? 'checked' : ''}> اجباری</label>
+    <label><input type="checkbox" id="fv_${k}" style="width:auto" ${f.visible ? 'checked' : ''}> قابل مشاهده</label></span></div>`; }).join('')}
+  <button class="p big" style="margin-top:10px" onclick="saveFields()">ذخیره فیلدها</button></div>
+  <div class="c"><h3>دسته‌های چالش</h3>${S.cats.map(k => `<div class="row"><div style="display:flex;gap:8px;align-items:center">${chIcon(k)}<b>${esc(k.name)}</b></div>
+    <div style="display:flex;gap:6px"><input type="color" id="kc_${k.id}" value="${k.color}" style="width:50px;padding:2px">
+    <input type="file" accept="image/*" id="ki_${k.id}" style="width:auto;max-width:140px">
+    <button class="small" onclick="saveCat('${k.id}')">ذخیره</button><button class="small danger" onclick="delCat('${k.id}')">حذف</button></div></div>`).join('')}
+    <div class="f" style="margin-top:8px"><label>نام دسته جدید<input id="kn_new"></label><label>رنگ<input id="kc_new" type="color" value="#2f9e6b"></label></div>
+    <input type="file" accept="image/*" id="ki_new" style="margin-top:6px"><button class="small" style="margin-top:6px" onclick="saveCat('new')">افزودن دسته</button></div>
+  <div class="c"><h3>چالش‌ها و سطح‌ها</h3>
+  <p class="mu">سطح ۱ شروع است. هر سطح باید جمع امتیاز برابر سطح ۱ داشته باشد. سطح‌هایی که اولین عضو به آن رسیده، قفل‌اند.</p>
+  ${probs.length ? `<div class="banner">${probs.map(esc).join('<br>')}</div>` : '<div class="chip">تنظیم سطح‌ها کامل است</div>'}
+  <div id="lv-editor">${levelEditorHtml()}</div>
+  <button class="ghost2" style="width:100%;margin-top:8px" onclick="addLevel()">افزودن سطح جدید</button>
+  <button class="p big" style="margin-top:8px" onclick="saveLevels()">ذخیره چالش‌ها و سطح‌ها</button></div>
+  <div class="c"><h3>بستن و پایان</h3><p class="mu">بستن مراحل خودکار است و با ورود هرکس به لیگ انجام می‌شود.</p></div>`;
+}
+function levelEditorHtml() {
+  const top = Math.max(1, topLevel()); let h = '';
+  for (let L = 1; L <= top; L++) {
+    const locked = L <= S.ws.levels_started;
+    const list = S.ch.filter(c => c.level === L);
+    h += `<div class="c" data-level="${L}" style="border-style:dashed"><h3>سطح ${fa(L)} ${locked ? '<span class="lock">🔒 شروع شده</span>' : ''}</h3>
+      ${list.map(c => challengeRow(c, locked)).join('')}
+      ${locked ? '' : `<button class="small" onclick="addChallenge(${L})">+ چالش</button>`}</div>`;
+  }
+  return h;
+}
+function challengeRow(c, locked) {
+  const dis = locked ? 'disabled' : '';
+  return `<div class="c ch-row" data-id="${c.id}" data-locked="${locked ? 1 : 0}" style="margin:6px 0">
+    <div class="f">
+      <label class="full">عنوان<input class="cf-t" value="${esc(c.title)}" ${dis}></label>
+      <label>امتیاز<input class="cf-p" type="number" min="1" step="1" value="${c.base_points}" ${dis}></label>
+      <label>دسته<select class="cf-k" ${dis}><option value="">بدون دسته</option>${S.cats.map(k => `<option value="${k.id}" ${k.id === c.category_id ? 'selected' : ''}>${esc(k.name)}</option>`).join('')}</select></label>
+      <label class="full">توضیح<textarea class="cf-d" rows="2" ${dis}>${esc(c.description || '')}</textarea></label>
+      <label class="full">لینک توضیح بیشتر (https)<input class="cf-l" dir="ltr" value="${esc(c.link || '')}" ${dis}></label>
+    </div>
+    <div class="row nob"><label><input type="checkbox" class="cf-a" style="width:auto" ${c.is_active ? 'checked' : ''} ${dis}> فعال</label>
+    ${locked ? '<span class="lock">قفل</span>' : `<button class="small danger" onclick="this.closest('.ch-row').remove()">حذف</button>`}</div></div>`;
+}
+function addChallenge(L) {
+  const box = document.querySelector(`[data-level="${L}"]`);
+  box.insertAdjacentHTML('beforeend', challengeRow({id: '', title: '', base_points: 1, category_id: null, description: '', link: '', is_active: true}, false));
+}
+function addLevel() {
+  const top = Math.max(1, document.querySelectorAll('[data-level]').length);
+  $('#lv-editor').insertAdjacentHTML('beforeend', `<div class="c" data-level="${top + 1}" style="border-style:dashed"><h3>سطح ${fa(top + 1)}</h3>
+    ${challengeRow({id: '', title: '', base_points: 1, category_id: null, description: '', link: '', is_active: true}, false)}
+    <button class="small" onclick="addChallenge(${top + 1})">+ چالش</button></div>`);
+}
+async function saveLevels() {
+  const items = []; let bad = null;
+  document.querySelectorAll('[data-level]').forEach(box => {
+    const L = +box.dataset.level;
+    box.querySelectorAll('.ch-row').forEach(r => {
+      const title = r.querySelector('.cf-t').value.trim();
+      const pts = r.querySelector('.cf-p').value;
+      if (!title && !r.dataset.id) return; // ردیف خالی جدید
+      items.push({id: r.dataset.id || null, level: L, title, points: pts, category_id: r.querySelector('.cf-k').value || null,
+        description: r.querySelector('.cf-d').value.trim() || null, link: r.querySelector('.cf-l').value.trim() || null,
+        is_active: r.querySelector('.cf-a').checked});
+    });
+  });
+  if (!items.length) return notify('حداقل یک چالش لازم است', false);
+  if (items.some(i => !i.title)) return notify('عنوان همه چالش‌ها را وارد کنید', false);
+  const {error} = await sb.rpc('save_challenges', {p_ws: S.wid, p_items: items});
+  if (error) return notify(error.message, false);
+  notify('چالش‌ها و سطح‌ها ذخیره شد ✅'); reload();
+}
+async function decideMember(uid, ok) {
+  const {error} = await sb.rpc('approve_membership', {p_ws: S.wid, p_user: uid, p_ok: ok});
+  notify(error ? error.message : ok ? 'عضو تایید شد ✅' : 'درخواست رد شد', !error); reload();
+}
+async function setRole(uid, role) {
+  const {error} = await sb.rpc('set_member_role', {p_ws: S.wid, p_user: uid, p_role: role});
+  notify(error ? error.message : 'نقش تغییر کرد ✅', !error); reload();
+}
+async function removeMem(uid) {
+  if (!confirm('این عضو اخراج شود؟ سوابقش باقی می‌ماند.')) return;
+  const {error} = await sb.rpc('remove_member', {p_ws: S.wid, p_user: uid});
+  notify(error ? error.message : 'عضو اخراج شد', !error); reload();
+}
+async function decideEdit(id, ok) {
+  const {error} = await sb.rpc('approve_day_edit', {p_id: id, p_ok: ok});
+  notify(error ? error.message : ok ? 'ویرایش اعمال شد ✅' : 'درخواست رد شد', !error); reload();
+}
+async function makeInvite() {
+  const d = normD($('#iv_d').value), m = normD($('#iv_m').value);
+  const {data, error} = await sb.rpc('create_invite', {p_ws: S.wid, p_days: d ? +d : null, p_max: m ? +m : null});
+  if (error) return notify(error.message, false);
+  const o = $('#iv_out'); o.style.display = 'block'; o.value = `${location.origin}${location.pathname}?join=${data}`; o.select();
+  notify('لینک دعوت ساخته شد ✅'); reload();
+}
+async function toggleInvite(token, revoked) {
+  const {error} = await sb.rpc('set_invite_active', {p_token: token, p_active: !!revoked});
+  notify(error ? error.message : 'لینک به‌روز شد ✅', !error); reload();
+}
+async function saveWs() {
+  const v = {p_name: $('#ws_name').value.trim(), p_visibility: $('#ws_vis').value,
+    p_bonus_enabled: $('#ws_bonus').value === 'true', p_bonus_percent: +normD($('#ws_bp').value),
+    p_win_percent: +normD($('#ws_wp').value), p_auto_approve: $('#ws_auto').value === 'true',
+    p_palette: {primary: $('#ws_c1').value, dark: $('#ws_c2').value}};
+  if (!v.p_name) return notify('نام لیگ را وارد کنید', false);
+  const {error} = await sb.rpc('update_workspace_settings', {p_ws: S.wid, ...v});
+  notify(error ? error.message : 'تنظیمات ذخیره شد ✅', !error); reload();
+}
+async function saveFields() {
+  const arr = FIELD_KEYS.map(k => ({key: k, required: $('#fr_' + k).checked, visible: $('#fv_' + k).checked}));
+  const {error} = await sb.rpc('set_profile_fields', {p_ws: S.wid, p_fields: arr});
+  notify(error ? error.message : 'فیلدها ذخیره شد ✅', !error); reload();
+}
+async function setLogo(inp) {
+  const f = inp.files[0]; if (!f) return;
+  try {
+    const data = await resizeImg(f, 256, 'image/png');
+    const {error} = await sb.from('workspaces').update({logo: data}).eq('id', S.wid);
+    if (error) throw error;
+    notify('لوگوی لیگ تغییر کرد ✅'); reload();
+  } catch (e) { notify('لوگو ذخیره نشد: ' + (e.message || e), false); }
+}
+async function saveCat(id) {
+  const isNew = id === 'new';
+  const name = isNew ? $('#kn_new').value.trim() : S.cats.find(k => k.id === id)?.name;
+  const color = isNew ? $('#kc_new').value : $('#kc_' + id).value;
+  const f = $(isNew ? '#ki_new' : '#ki_' + id).files[0];
+  if (!name) return notify('نام دسته را وارد کنید', false);
+  let icon = isNew ? null : (S.cats.find(k => k.id === id)?.icon || null);
+  if (f) icon = await resizeImg(f, 96, 'image/png');
+  const row = {workspace_id: S.wid, name, color, icon};
+  const {error} = isNew ? await sb.from('categories').insert(row) : await sb.from('categories').update({name, color, icon}).eq('id', id);
+  notify(error ? error.message : 'دسته ذخیره شد ✅', !error); reload();
+}
+async function delCat(id) {
+  if (!confirm('این دسته حذف شود؟ چالش‌های آن بدون دسته می‌شوند.')) return;
+  const {error} = await sb.from('categories').delete().eq('id', id);
+  notify(error ? error.message : 'دسته حذف شد', !error); reload();
+}
+
+boot();
+</script></body></html>
