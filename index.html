@@ -186,8 +186,50 @@ button.light{background:var(--card);color:var(--tx);border:1px solid var(--bd);b
 .tiles .tile,.tile,.tile:nth-child(even){border-radius:26px;margin-top:0}
 .tiles{align-items:stretch}
 .tile{height:100%}
+.ch{padding:9px 12px;margin:7px 0;border-radius:16px;border:none;border-inline-start:none;border-inline-end:5px solid var(--cc,#9aa6bf)}
+.ch:has(input:checked){border:none;border-inline-end:5px solid var(--cc,#9aa6bf)}
+.ch input[type=checkbox]{width:20px;height:20px;border-width:1.5px}
+.ch input[type=checkbox]:checked::after{font-size:12px}
+.ch .ib{width:36px;height:36px;border-radius:12px}
+.ch .ib svg{width:18px;height:18px}
+.ch .ct{font-size:.86em;line-height:1.5}
+.ch .ct small{font-size:.74em}
+.ch .bang{width:15px;height:15px;font-size:.68em;margin-inline-start:4px}
+.pt{font-size:.74em;padding:3px 7px;min-width:0;border-radius:9px}
+#tot{font-size:.8em;padding:9px 12px;margin:10px 0;border-radius:14px}
+#tot .sum{font-size:1em}
+.c{padding:14px}
+.c h3{font-size:.95em}
+.stat{padding:12px 14px}
+.stat .big2{font-size:1.15em}
+.ring{width:60px;height:60px}
+button.big{padding:12px;font-size:.92em;border-radius:15px}
+.loader{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.lg-mark{animation:bob 1.6s ease-in-out infinite;filter:drop-shadow(0 8px 18px rgba(47,123,246,.35))}
+@keyframes bob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.04)}}
+.ld-dots{display:flex;gap:8px}
+.ld-dots i{width:9px;height:9px;border-radius:50%;background:var(--ac);opacity:.3;animation:dotp 1.2s infinite}
+.ld-dots i:nth-child(2){animation-delay:.2s}.ld-dots i:nth-child(3){animation-delay:.4s}
+@keyframes dotp{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1.15)}}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.hero h1{font-size:1.3em}
+.hero-side{text-align:left;color:var(--mu);font-size:.78em;line-height:1.7}
+.dash{color:#aab6cc}
+.lgt .dots{color:#aab6cc;background:transparent;padding:0 4px}
+.lgt th.dots{color:#aab6cc}
+.lg-track{position:relative;height:5px;border-radius:5px;background:#e3ecfb;margin:12px 6px 0}
+.lg-track i{position:absolute;top:0;bottom:0;border-radius:5px;background:var(--ac);transition:width .15s,inset-inline-start .15s}
+.gchat{display:flex;flex-direction:column;height:calc(100vh - 250px)}
+.gmsgs{overflow-y:auto;flex:1;padding:4px 2px}
+.bub{max-width:78%;padding:9px 12px;border-radius:16px;background:var(--card);box-shadow:0 2px 8px rgba(20,40,75,.06);margin:6px 0;font-size:.88em}
+.bub.me{margin-inline-start:auto;background:var(--ac2);color:#fff}
+.bn{font-size:.74em;color:var(--ac);font-weight:700}
+.bub.me .bn{display:none}
+.bt{font-size:.68em;opacity:.7;margin-top:2px}
+.gbox{display:flex;gap:8px;margin-top:8px;padding-bottom:70px}
+.gbox input{flex:1}
 </style></head><body>
-<div id="app"><div class="c">در حال بارگذاری…</div></div><div id="drw-bg" onclick="closeDrawer()"></div><aside id="drw"></aside><div style="text-align:center;font-size:11px;color:#888;margin:8px">نسخه ۵.۲</div>
+<div id="app"></div><div id="drw-bg" onclick="closeDrawer()"></div><aside id="drw"></aside><div style="text-align:center;font-size:11px;color:#888;margin:8px">نسخه ۵.۲</div>
 <script>
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
 const SUPABASE_URL = "https://ekmiynpjugfqdnwfofgn.supabase.co";
@@ -232,6 +274,7 @@ function jdSel(p, minY, maxY, defY, greg) {
 }
 const jdRead = p => toGreg(+$('#' + p + '_y').value, +$('#' + p + '_m').value, +$('#' + p + '_d').value);
 
+const loaderHtml = () => `<div class="loader"><div class="lg-mark">${logo(76, null)}</div><div class="ld-dots"><i></i><i></i><i></i></div><div class="mu">در حال آماده‌سازی…</div></div>`;
 const DEF_LOGO = '<svg viewBox="0 0 64 64"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f7bf6"/><stop offset="1" stop-color="#34c77b"/></linearGradient></defs><circle cx="40" cy="13" r="6" fill="url(#lg)"/><path d="M32 25 L42 27 L48 40 L57 45" fill="none" stroke="url(#lg)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 28 L19 38 L11 54" fill="none" stroke="#2f7bf6" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const S = {tab: 'submit', edit: null, viewId: null, ws: null, wid: null, M: null, mode: 'guest', isMember: false, isAdmin: false,
   isSuper: false, ch: [], cats: [], fields: [], weeks: [], done: new Set(), saved: false, today: null, platformLogo: null, mships: [], iconDraft: {}};
@@ -454,6 +497,7 @@ function captureJoin() {
   if (t) { localStorage.setItem('wcd_join', t); history.replaceState(null, '', location.pathname); }
 }
 async function boot() {
+  if (!S.booted) { S.booted = true; $('#app').innerHTML = loaderHtml(); }
   captureJoin();
   const {data: {session}} = await sb.auth.getSession();
   if (!session) {
@@ -646,6 +690,7 @@ async function setPlatformLogo(inp) {
 
 /* ---------- قاب لیگ ---------- */
 async function openWs(id, tab) {
+  if (!S.ws) $('#app').innerHTML = loaderHtml();
   const today0 = todayIn('Asia/Tehran');
   const [wr, mm, ch, cats, wk, fl, sub] = await Promise.all([
     sb.from('workspaces').select('*').eq('id', id).single(),
@@ -690,7 +735,7 @@ const lvlBonus = L => S.ws.bonus_enabled ? Math.floor(lvlSum(L) * S.ws.bonus_per
 const lvlWin = L => Math.round((lvlSum(L) + lvlBonus(L)) * 7 * S.ws.win_percent / 100);
 const topLevel = () => S.ch.reduce((m, c) => Math.max(m, c.level), 0);
 
-const DRAWER_PAGES = ['hist', 'profile', 'settings', 'achieve', 'chat'];
+const DRAWER_PAGES = ['hist', 'profile', 'settings', 'achieve', 'pm'];
 function render() {
   const tabs = [];
   if (S.mode === 'member') tabs.push(['submit', 'ثبت امروز'], ['board', 'لیگ'], ['chat', 'چت']);
@@ -701,16 +746,17 @@ function render() {
   const banner = S.ws?.status === 'stopped' ? '<div class="banner">این لیگ متوقف شده است.</div>'
     : S.ws?.status === 'finished' ? '<div class="banner">این لیگ به پایان رسیده است.</div>' : '';
   const p = S.M?.profile || {};
+  const firstName = p.name || S.me?.display_name || '';
   $('#app').innerHTML = `<div class="top">${logo(30)}<span>${esc(S.ws?.name || '')}</span>
     <button class="prof-btn" onclick="openDrawer()" aria-label="منو">${svg(TABI.profile, 'currentColor', 22)}</button></div>
-  <div class="hero"><div><div class="mu2">${fd(S.today, {weekday: 'long', day: 'numeric', month: 'long'})}</div>
-  <h1>سلام ${esc(nmOf(p))} 👋</h1>${S.mode === 'member' ? `<div class="mu2">سطح ${fa(S.M.level)}</div>` : ''}</div></div>
+  <div class="hero"><div><h1>سلام ${esc(firstName)} 👋</h1></div>
+  <div class="hero-side">${fd(S.today, {weekday: 'long', day: 'numeric', month: 'long'})}${S.mode === 'member' ? `<br>سطح ${fa(S.M.level)}` : ''}</div></div>
   ${banner}<div id="main"></div>
   <nav class="tabs">${tabs.map(([k, v]) => `<button class="${S.tab === k ? 'on' : ''}" onclick="go('${k}')">${svg(TABI[k])}<span>${v}</span></button>`).join('')}</nav>`;
   renderDrawer();
-  ({submit: submitView, board: boardView, hist: histView, profile: profileView, admin: adminView, chat: chatView, achieve: achieveView, settings: settingsView})[S.tab]();
+  ({submit: submitView, board: boardView, hist: histView, profile: profileView, admin: adminView, chat: groupChatView, pm: chatView, achieve: achieveView, settings: settingsView})[S.tab]();
 }
-function go(k) { S.tab = k; if (k !== 'profile') S.viewId = null; if (k === 'admin') S.adminSub = null; S.edit = null; render(); }
+function go(k) { clearInterval(S.gTimer); S.tab = k; if (k !== 'profile') S.viewId = null; if (k === 'admin') S.adminSub = null; S.edit = null; render(); }
 function openProfile(id) { S.viewId = id; go('profile'); }
 
 /* ---------- ثبت امروز ---------- */
@@ -727,7 +773,7 @@ function submitView() {
     <span class="ct">${esc(c.title)}${c.description || c.link ? `<span class="bang" onclick="event.preventDefault();event.stopPropagation();showInfo('${c.id}')">!</span>` : ''}<small>${catOf(c) ? esc(catOf(c).name) : ''}</small></span>
     <b class="pt">${fa(c.base_points)}+</b></label>`).join('')}
   <p id="tot"></p>
-  ${inPeriod && !notStarted ? `<button class="p big" onclick="save()">${S.saved ? 'بروزرسانی فعالیت امروز' : 'ثبت فعالیت امروز'}</button>` : ''}
+  ${inPeriod && !notStarted ? `<button class="p big" onclick="save()">${S.saved ? 'به‌روز رسانی فعالیت امروز' : 'ثبت فعالیت امروز'}</button>` : ''}
   <p class="mu">برای ثبت یا ویرایش امتیاز روزهای گذشته برو به قسمت تاریخچه</p></div>`;
   tot(); summary();
 }
@@ -771,21 +817,30 @@ async function boardView() {
     .sort((a, b) => b.total - a.total);
   rows.forEach((r, i) => r.rank = i && r.total === rows[i - 1].total ? rows[i - 1].rank : i + 1);
   const heading = P ? `${fd(P.start_date, {day: 'numeric', month: 'long'})} تا ${fd(P.end_date, {day: 'numeric', month: 'long'})}` : '—';
-  const cell = (d, v) => d > S.today ? '<span class="dots">···</span>' : (v !== undefined ? fa(v) : '');
+  const cell = (d, v) => d > S.today ? '<span class="dash">—</span>' : (v !== undefined ? fa(v) : '');
   $('#main').innerHTML = `<div class="c lg">
     <div class="lg-top"><div><h3>جدول لیگ ${esc(S.ws?.name || '')}</h3><div class="mu">${heading}</div></div>
-    <button class="icon" onclick="boardView()" aria-label="به‌روزرسانی">${svg('<path d="M21 12a9 9 0 1 1-2.6-6.3M21 4v5h-5"/>')}</button></div>
-    <div class="lg-scroll" id="tw"><table class="lgt"><tr><th>رتبه</th><th>نام</th><th>سطح</th>
+    <button class="icon" onclick="boardView()" aria-label="به‌روز رسانی">${svg('<path d="M21 12a9 9 0 1 1-2.6-6.3M21 4v5h-5"/>')}</button></div>
+    <div class="lg-scroll" id="tw"><table class="lgt"><tr><th>رتبه</th><th>نام</th><th>سطح</th><th class="dots">···</th>
     ${days.map(d => `<th class="${d === S.today ? 'today' : ''}" ${d === S.today ? 'id="todayTh"' : ''}>${fd(d, {weekday: 'long'})}</th>`).join('')}
     <th>جمع کل</th></tr>
     ${rows.map(r => `<tr class="${r.id === S.uid ? 'me' : ''}"><td>${['🥇', '🥈', '🥉'][r.rank - 1] || fa(r.rank)}</td>
-      <td><span class="lnk" onclick="openProfile('${r.id}')">${esc(r.name)}</span></td><td>${fa(r.level)}</td>
+      <td><span class="lnk" onclick="openProfile('${r.id}')">${esc(r.name)}</span></td><td>${fa(r.level)}</td><td class="dots">···</td>
       ${days.map(d => `<td class="${d === S.today ? 'today' : ''}">${cell(d, r.d[d])}</td>`).join('')}
       <td><span class="tot ${r.rank === 1 ? 'first' : ''}">${fa(r.total)}</span></td></tr>`).join('')}
     </table></div>
-    <button class="lg-next" aria-label="حرکت" onclick="document.getElementById('tw').scrollBy({left:-160,behavior:'smooth'})">${svg('<path d="M15 6l-6 6 6 6"/>', 'currentColor', 18)}</button>
+    <div class="lg-track"><i id="lg-thumb"></i></div>
   </div>`;
+  const tw = $('#tw'), th = $('#lg-thumb');
+  const upd = () => {
+    const w = tw.clientWidth / tw.scrollWidth * 100, max = tw.scrollWidth - tw.clientWidth;
+    th.style.width = Math.min(100, w) + '%';
+    const f = max > 0 ? Math.abs(tw.scrollLeft) / max : 0;
+    th.style.insetInlineStart = (f * (100 - Math.min(100, w))) + '%';
+  };
+  tw.addEventListener('scroll', upd); upd();
   const t = $('#todayTh'); if (t) t.scrollIntoView({inline: 'center', block: 'nearest'});
+  upd();
 }
 
 /* ---------- تاریخچه و ویرایش روزهای گذشته ---------- */
@@ -1019,11 +1074,11 @@ function challengeRow(c, locked) {
   const dis = locked ? 'disabled' : '';
   return `<div class="c ch-row" data-id="${c.id}" data-locked="${locked ? 1 : 0}" style="margin:6px 0">
     <div class="f">
-      <label class="full">عنوان<input class="cf-t" value="${esc(c.title)}" ${dis}></label>
+      <label class="full">عنوان<input class="cf-t" value="${esc(c.title)}"></label>
       <label>امتیاز<input class="cf-p" inputmode="numeric" value="${fa(c.base_points)}" ${dis}></label>
-      <label>دسته<select class="cf-k" ${dis}><option value="">بدون دسته</option>${S.cats.map(k => `<option value="${k.id}" ${k.id === c.category_id ? 'selected' : ''}>${esc(k.name)}</option>`).join('')}</select></label>
-      <label class="full">توضیح<textarea class="cf-d" rows="2" ${dis}>${esc(c.description || '')}</textarea></label>
-      <label class="full">لینک توضیح بیشتر (https)<input class="cf-l" dir="ltr" value="${esc(c.link || '')}" ${dis}></label>
+      <label>دسته<select class="cf-k"><option value="">بدون دسته</option>${S.cats.map(k => `<option value="${k.id}" ${k.id === c.category_id ? 'selected' : ''}>${esc(k.name)}</option>`).join('')}</select></label>
+      <label class="full">توضیح<textarea class="cf-d" rows="2">${esc(c.description || '')}</textarea></label>
+      <label class="full">لینک توضیح بیشتر (https)<input class="cf-l" dir="ltr" value="${esc(c.link || '')}"></label>
     </div>
     <div class="row nob"><label><input type="checkbox" class="cf-a" style="width:auto" ${c.is_active ? 'checked' : ''} ${dis}> فعال</label>
     ${locked ? '<span class="lock">قفل</span>' : `<button class="small danger" onclick="this.closest('.ch-row').remove()">حذف</button>`}</div></div>`;
@@ -1099,7 +1154,7 @@ async function saveWs() {
 function bonusToggle() { $('#ws_bp').disabled = !$('#ws_bonus').checked; }
 function fieldToggle(k) { $('#fo_' + k).style.display = $('#fe_' + k).checked ? 'flex' : 'none'; }
 async function saveFields() {
-  const arr = FIELD_KEYS.filter(k => $('#fe_' + k).checked).map(k => ({key: k, required: $('#fr_' + k).checked, visible: $('#fv_' + k).checked}));
+  const arr = FIELD_KEYS.filter(k => $('#fe_' + k).checked).map(k => ({key: k, required: k === 'name' ? true : $('#fr_' + k).checked, visible: $('#fv_' + k).checked}));
   const {error} = await sb.rpc('set_profile_fields', {p_ws: S.wid, p_fields: arr});
   notify(error ? error.message : 'فیلدها ذخیره شد ✅', !error); reload();
 }
@@ -1149,7 +1204,7 @@ function renderDrawer() {
     ${item('achieve', 'افتخارات', "drawerGo('achieve')", member || arch)}
     ${item('hist', 'تاریخچه', "drawerGo('hist')", member || arch)}
     ${item('settings', 'تنظیمات', "drawerGo('settings')", member)}
-    ${item('chat', 'پیام‌ها', "drawerGo('chat')", member)}
+    ${item('chat', 'پیام‌ها', "drawerGo('pm')", member)}
     ${item('leagues', 'لیگ‌ها', "drawerGo('wsList')")}
     ${item('logout', 'خروج از حساب', 'logout()', true, 'danger')}`;
 }
@@ -1157,7 +1212,7 @@ function drawerGo(k) {
   closeDrawer();
   if (k === 'wsList') return wsListView();
   if (k === 'profile') S.viewId = null;
-  if (k === 'chat') S.chatTab = S.chatTab || 'in';
+  if (k === 'pm') S.chatTab = S.chatTab || 'in';
   go(k);
 }
 
@@ -1210,7 +1265,7 @@ async function chatView(tab) {
     return;
   }
   const col = S.chatTab === 'in' ? 'recipient_id' : 'sender_id';
-  const {data, error} = await sb.from('messages').select('*').eq('workspace_id', S.wid).eq(col, S.uid).order('created_at', {ascending: false}).limit(100);
+  const {data, error} = await sb.from('messages').select('*').eq('workspace_id', S.wid).eq(col, S.uid).not('recipient_id', 'is', null).order('created_at', {ascending: false}).limit(100);
   if (error) return m.innerHTML = seg + `<div class="c msg err">${esc(error.message)}</div>`;
   const rows = (data || []).map(x => {
     const who = S.chatTab === 'in' ? NAME[x.sender_id] : NAME[x.recipient_id];
@@ -1218,6 +1273,31 @@ async function chatView(tab) {
     return `<div class="msgb"><div class="mu">${S.chatTab === 'in' ? 'از ' : 'به '}${esc(who || '—')} · ${t}</div><div>${esc(x.body)}</div></div>`;
   }).join('');
   m.innerHTML = seg + `<div class="c">${rows || '<p class="mu">پیامی نیست.</p>'}</div>`;
+}
+async function groupChatView(refresh) {
+  const m = $('#main');
+  const {data: mem} = await sb.rpc('get_scores', {p_ws: S.wid, p_from: S.today});
+  const NAME = {}; (mem || []).forEach(r => NAME[r.member_id] = r.name);
+  const {data, error} = await sb.from('messages').select('*').eq('workspace_id', S.wid).is('recipient_id', null)
+    .order('created_at', {ascending: true}).limit(200);
+  if (error) return m.innerHTML = `<div class="c msg err">${esc(error.message)}</div>`;
+  const list = (data || []).map(x => {
+    const mine = x.sender_id === S.uid;
+    const t = new Date(x.created_at).toLocaleTimeString('fa-IR', {timeZone: 'Asia/Tehran', hour: '2-digit', minute: '2-digit'});
+    return `<div class="bub ${mine ? 'me' : ''}">${mine ? '' : `<div class="bn">${esc(NAME[x.sender_id] || '—')}</div>`}<div>${esc(x.body)}</div><div class="bt">${t}</div></div>`;
+  }).join('');
+  if (refresh && $('#gtxt')?.value) return;
+  m.innerHTML = `<div class="gchat"><div class="gmsgs" id="gmsgs">${list || '<p class="mu">هنوز پیامی نیست. اولین پیام را بفرستید.</p>'}</div>
+    <div class="gbox"><input id="gtxt" placeholder="پیام خود را بنویسید…" maxlength="1000"><button class="p small" onclick="sendGroup()">ارسال</button></div></div>`;
+  const box = $('#gmsgs'); if (box) box.scrollTop = box.scrollHeight;
+  clearInterval(S.gTimer);
+  S.gTimer = setInterval(() => { if (S.tab === 'chat') groupChatView(true); }, 15000);
+}
+async function sendGroup() {
+  const body = $('#gtxt').value.trim(); if (!body) return;
+  const {error} = await sb.from('messages').insert({workspace_id: S.wid, sender_id: S.uid, recipient_id: null, body});
+  if (error) return notify('ارسال نشد: ' + error.message, false);
+  groupChatView();
 }
 async function sendMsg() {
   const to = $('#msg_to').value, body = $('#msg_body').value.trim();
