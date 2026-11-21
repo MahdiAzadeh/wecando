@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>چالشکده</title>
 <link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#2f9e6b">
+<meta name="theme-color" content="#2f7bf6">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="چالشکده">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -95,6 +95,60 @@ th.today,td.today{background:var(--today);font-weight:700}
 .bdg{position:absolute;top:10px;inset-inline-end:10px;background:#e0533d;color:#fff;border-radius:20px;min-width:26px;height:26px;padding:0 8px;font-size:.8em;display:grid;place-items:center}
 .bdg.warn{background:#b7791f}
 .admhead{display:flex;align-items:center;gap:10px;margin:6px 0 8px;flex-wrap:wrap}.admhead h2{margin:0;font-size:1.15em}
+:root{--bg:#f3f7fd;--card:#ffffff;--tx:#14284b;--mu:#7b87a1;--ac:#2f7bf6;--ac2:#17305f;--bd:#e5ecf7;--wait:#c27c12;--today:#fff4d6}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1830;--card:#18243f;--tx:#e8eefc;--mu:#93a0bf;--ac:#4d8dff;--ac2:#2a4a8a;--bd:#263559;--wait:#e0a84a;--today:#3a3320}}
+body{background:linear-gradient(180deg,#e4edff 0,var(--bg) 340px);padding:12px 12px 120px;max-width:680px}
+.top{margin:6px 2px 10px}
+.top span{font-size:1.05em;font-weight:800}
+.top button.ghost2{border-radius:999px;background:var(--card);box-shadow:0 2px 10px rgba(20,40,75,.08);border:none;padding:8px 16px;font-weight:700;color:var(--tx)}
+.hero{background:none;color:var(--tx);padding:6px 2px;box-shadow:none;border-radius:0}
+.hero .mu2{color:var(--mu)}
+.hero h1{font-size:1.5em;font-weight:800}
+.hero button.ghost{background:var(--card);color:var(--tx);box-shadow:0 2px 10px rgba(20,40,75,.08);border-radius:999px}
+.c{background:var(--card);border:none;border-radius:24px;box-shadow:0 8px 24px rgba(20,40,75,.06);padding:16px}
+.c h3{font-weight:800}
+input,select,textarea{background:#f3f7fd;border:1px solid transparent;border-radius:14px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac);background:var(--card)}
+button{border-radius:14px}
+button.p{background:var(--ac2);box-shadow:0 8px 18px rgba(23,48,95,.25);border:0;border-radius:18px;font-weight:800}
+button.p:active{box-shadow:0 2px 6px rgba(23,48,95,.25)}
+button.big{padding:16px;border-radius:18px}
+button.small{border-radius:12px}
+.stat{background:linear-gradient(135deg,#eaf2ff,#f7fbff);border-radius:24px;box-shadow:none;padding:16px 18px}
+.stat::after{content:"🏆";font-size:36px;margin-inline-start:auto;flex:none}
+.stat .big2{font-size:1.35em}
+.ring{background:conic-gradient(var(--ac) calc(var(--p)*1%),#e3eaf7 0)}
+.ring::before{background:var(--card)}
+.ch{border:none;border-radius:20px;background:var(--card);box-shadow:0 6px 18px rgba(20,40,75,.07);padding:14px;margin:12px 0;border-inline-start:5px solid var(--cc,#9aa6bf)}
+.ch:has(input:checked){border:none;border-inline-start:5px solid var(--cc,#9aa6bf);background:var(--card);box-shadow:0 8px 22px rgba(47,123,246,.14)}
+.ch input[type=checkbox]{border:2px solid #d3ddf0}
+.ch input[type=checkbox]:checked{background:#24b56a;border-color:#24b56a}
+.ch .ib{width:50px;height:50px;border-radius:16px}
+.ch .ct{font-weight:700}
+.ch .ct small{color:var(--mu)}
+.pt{background:#eaf2ff;color:var(--ac);border-radius:14px;padding:8px 12px;font-weight:800;min-width:46px;text-align:center}
+#tot{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#eaf2ff;border-radius:18px;padding:12px 16px;margin:14px 0;font-weight:700;color:var(--tx)}
+#tot .chip{background:transparent;padding:0;margin:0;font-weight:600;color:var(--mu)}
+#tot .sum{color:var(--tx);font-weight:800}
+.tabs{left:12px;right:12px;bottom:12px;border-radius:26px;border:none;box-shadow:0 12px 32px rgba(20,40,75,.16);padding:8px 6px calc(8px + env(safe-area-inset-bottom));justify-content:space-around}
+.tabs button{padding:6px 6px;border-radius:16px;position:relative;color:var(--mu)}
+.tabs .on{color:var(--ac);font-weight:800}
+.tabs .on::after{content:"";position:absolute;bottom:-6px;width:26px;height:4px;border-radius:4px;background:var(--ac)}
+.tabs svg{stroke:currentColor}
+.tile{border-radius:26px 34px 26px 34px;box-shadow:0 8px 22px rgba(20,40,75,.07)}
+.tile:nth-child(even){border-radius:34px 26px 34px 26px}
+.tico{border-radius:18px}
+.av{box-shadow:0 0 0 3px var(--card)}
+.tag{background:#eaf2ff;color:var(--ac);font-weight:700}
+.row{border-bottom:1px solid #eef3fb}
+.toast{border-radius:16px}
+.banner{background:#fff4e0;color:#8a5a00;border-radius:16px}
+.badge.wait{border-radius:999px}
+.bdg{box-shadow:0 2px 6px rgba(224,83,61,.35)}
+.jd select{background:#f3f7fd}
+table{border-spacing:0}
+td,th{border-bottom:1px solid #eef3fb}
+tr.me td{background:#eaf2ff}
 </style></head><body>
 <div id="app"><div class="c">در حال بارگذاری…</div></div><div style="text-align:center;font-size:11px;color:#888;margin:8px">نسخه ۵.۲</div>
 <script>
@@ -141,7 +195,7 @@ function jdSel(p, minY, maxY, defY, greg) {
 }
 const jdRead = p => toGreg(+$('#' + p + '_y').value, +$('#' + p + '_m').value, +$('#' + p + '_d').value);
 
-const DEF_LOGO = '<svg viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#2f9e6b"/><path d="M12 20 22 46 32 26 42 46 52 20" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const DEF_LOGO = '<svg viewBox="0 0 64 64"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f7bf6"/><stop offset="1" stop-color="#34c77b"/></linearGradient></defs><circle cx="40" cy="13" r="6" fill="url(#lg)"/><path d="M32 25 L42 27 L48 40 L57 45" fill="none" stroke="url(#lg)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 28 L19 38 L11 54" fill="none" stroke="#2f7bf6" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const S = {tab: 'submit', edit: null, viewId: null, ws: null, wid: null, M: null, mode: 'guest', isMember: false, isAdmin: false,
   isSuper: false, ch: [], cats: [], fields: [], weeks: [], done: new Set(), saved: false, today: null, platformLogo: null, mships: [], iconDraft: {}};
 let legacy = false;
@@ -191,7 +245,7 @@ const TABI = {
   admin: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'};
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); window.__installEv = e; });
 function installBtn() { return window.__installEv ? '<button class="ghost2 small" onclick="installApp()">📲 نصب برنامه</button>' : ''; }
-async function installApp() { const e = window.__installEv; if (!e) return; e.prompt(); await e.userChoice; window.__installEv = null; render(); }
+async function installApp() { const e = window.__installEv; if (!e) return; e.prompt(); await e.userChoice; window.__installEv = null; boot(); }
 // اگر خطایی رخ داد، متنش روی صفحه نشان داده شود (به‌جای بارگذاری بی‌پایان)
 window.addEventListener('error', e => showFatal(e.message));
 window.addEventListener('unhandledrejection', e => showFatal(e.reason?.message || String(e.reason)));
@@ -584,7 +638,7 @@ async function openWs(id, tab) {
 function reload() { return openWs(S.wid, S.tab); }
 function applyPalette(p) {
   const r = document.documentElement.style;
-  r.setProperty('--ac', p?.primary || '#2f9e6b'); r.setProperty('--ac2', p?.dark || '#1f7a52');
+  r.setProperty('--ac', p?.primary || '#2f7bf6'); r.setProperty('--ac2', p?.dark || '#17305f');
 }
 // دوره جاری (مرحله‌ی ۷ روزه‌ای که امروز در آن است؛ اگر نیست، نزدیک‌ترین)
 function curPeriod() {
@@ -605,10 +659,10 @@ function render() {
   else tabs.push(['board', 'لیگ']);
   if (S.isAdmin) tabs.push(['admin', 'مدیریت']);
   if (!tabs.some(t => t[0] === S.tab)) S.tab = tabs[0][0];
-  const banner = S.ws.status === 'stopped' ? '<div class="banner">این لیگ متوقف شده است.</div>'
-    : S.ws.status === 'finished' ? '<div class="banner">این لیگ به پایان رسیده است.</div>' : '';
+  const banner = S.ws?.status === 'stopped' ? '<div class="banner">این لیگ متوقف شده است.</div>'
+    : S.ws?.status === 'finished' ? '<div class="banner">این لیگ به پایان رسیده است.</div>' : '';
   const p = S.M?.profile || {};
-  $('#app').innerHTML = `<div class="top">${logo(30)}<span>${esc(S.ws.name)}</span>
+  $('#app').innerHTML = `<div class="top">${logo(30)}<span>${esc(S.ws?.name)}</span>
   <span style="margin-inline-start:auto;display:flex;gap:6px">${installBtn()}<button class="ghost2 small" onclick="wsListView()">⇄ لیگ‌ها</button></span></div>
   <div class="hero"><div><div class="mu2">${fd(S.today, {weekday: 'long', day: 'numeric', month: 'long'})}</div>
   <h1>سلام ${esc(nmOf(p))} 👋</h1>${S.mode === 'member' ? `<div class="mu2">سطح ${fa(S.M.level)}</div>` : ''}</div>
@@ -630,7 +684,7 @@ function submitView() {
   ${notStarted ? `<div class="c"><b>ثبت شما از ${fd(S.M.active_from, {day: 'numeric', month: 'long'})} شروع می‌شود.</b></div>` : ''}
   ${!inPeriod && !notStarted ? '<div class="c mu">امروز در هیچ مرحله‌ای از این لیگ نیست.</div>' : ''}
   <div class="c"><div class="mu">چالش‌های مرحله ${fa(L)} — <b>${fd(S.today, {weekday: 'long', day: 'numeric', month: 'long'})}</b></div>
-  ${a.map(c => `<div class="ch-wrap"><label class="ch"><input type="checkbox" value="${c.id}" ${S.done.has(c.id) ? 'checked' : ''} onchange="tot()">${chIcon(catOf(c))}
+  ${a.map(c => `<div class="ch-wrap"><label class="ch" style="--cc:${catOf(c)?.color || '#9aa6bf'}"><input type="checkbox" value="${c.id}" ${S.done.has(c.id) ? 'checked' : ''} onchange="tot()">${chIcon(catOf(c))}
     <span class="ct">${esc(c.title)}<small>${catOf(c) ? esc(catOf(c).name) : ''}</small></span><b class="pt">+${fa(c.base_points)}</b></label>
     <button type="button" class="info" aria-label="توضیحات" onclick="showInfo('${c.id}')">!</button></div>`).join('')}
   <p id="tot"></p>
@@ -681,7 +735,7 @@ async function boardView() {
   rows.forEach((r, i) => r.rank = i && r.total === rows[i - 1].total ? rows[i - 1].rank : i + 1);
   const heading = P ? `${fd(P.start_date, {day: 'numeric', month: 'long'})} تا ${fd(P.end_date, {day: 'numeric', month: 'long'})}` : '—';
   $('#main').innerHTML = `<div class="c">
-  <div class="row nob" style="padding:0"><div><h3 style="margin:0">جدول لیگ ${esc(S.ws.name)}</h3><div class="mu">${heading}</div></div>
+  <div class="row nob" style="padding:0"><div><h3 style="margin:0">جدول لیگ ${esc(S.ws?.name)}</h3><div class="mu">${heading}</div></div>
   <button class="icon" onclick="boardView()" title="به‌روزرسانی" aria-label="به‌روزرسانی">${svg('<path d="M21 12a9 9 0 1 1-2.6-6.3M21 4v5h-5"/>')}</button></div>
   <div class="w" id="tw" style="margin-top:10px"><table><tr><th>رتبه</th><th>نام</th><th>سطح</th>
   ${days.map(d => `<th class="${d === S.today ? 'today' : ''}" ${d === S.today ? 'id="todayTh"' : ''}>${fd(d, {weekday: 'long'})}</th>`).join('')}
@@ -824,7 +878,7 @@ async function adminView() {
     sb.from('memberships').select('user_id', {count: 'exact', head: true}).eq('workspace_id', S.wid).eq('status', 'pending'),
     sb.from('day_edit_requests').select('id', {count: 'exact', head: true}).eq('workspace_id', S.wid).eq('status', 'pending')]);
   const badge = {req: (pm.count || 0) + (de.count || 0), ch: LEVEL_OK().length};
-  $('#main').innerHTML = `<div class="c"><h3>مدیریت ${esc(S.ws.name)}</h3><p class="mu">یک بخش را انتخاب کنید.</p></div>
+  $('#main').innerHTML = `<div class="c"><h3>مدیریت ${esc(S.ws?.name)}</h3><p class="mu">یک بخش را انتخاب کنید.</p></div>
   <div class="tiles">${ADM.map(a => `<button class="tile" onclick="openAdm('${a.k}')">
     <span class="tico" style="background:${a.c}22;color:${a.c}">${svg(a.i, a.c, 26)}</span>
     <b>${a.t}</b><span class="mu">${a.d}</span>

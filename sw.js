@@ -1,9 +1,13 @@
-// نسخه کش را هر بار که index.html تغییر می‌کند بالا ببرید (مثلاً v4)
-const CACHE = 'wecando-v4';
+// نسخه کش را هر بار که فایل‌ها تغییر می‌کنند بالا ببرید
+const CACHE = 'wecando-v5';
 const SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  e.waitUntil(
+    caches.open(CACHE)
+      .then(c => Promise.all(SHELL.map(u => c.add(u).catch(() => null))))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', e => {
@@ -16,9 +20,8 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
-  // درخواست‌های Supabase و CDN را دست نمی‌زنیم؛ داده‌ها همیشه از شبکه می‌آیند
+  // درخواست‌های Supabase و CDN دست زده نمی‌شوند؛ داده‌ها همیشه از شبکه می‌آیند
   if (url.origin !== self.location.origin || e.request.method !== 'GET') return;
-  // اول شبکه (تا تغییرات جدید دیده شوند)، اگر نبود کش
   e.respondWith(
     fetch(e.request)
       .then(res => {
