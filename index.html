@@ -149,8 +149,45 @@ button.small{border-radius:12px}
 table{border-spacing:0}
 td,th{border-bottom:1px solid #eef3fb}
 tr.me td{background:#eaf2ff}
+.prof-btn{width:44px;height:44px;border-radius:50%;padding:0;display:grid;place-items:center;margin-inline-start:auto;background:var(--card);box-shadow:0 4px 12px rgba(20,40,75,.1);border:0;color:var(--tx)}
+#drw-bg{position:fixed;inset:0;background:rgba(10,20,45,.35);opacity:0;pointer-events:none;transition:opacity .3s;z-index:25}
+body.drw-open #drw-bg{opacity:1;pointer-events:auto}
+#drw{position:fixed;top:0;bottom:0;right:0;width:66vw;max-width:440px;background:var(--card);transform:translateX(100%);transition:transform .32s cubic-bezier(.2,.8,.2,1);z-index:30;padding:14px 16px 24px;overflow-y:auto;border-radius:26px 0 0 26px;box-shadow:-10px 0 30px rgba(20,40,75,.15)}
+body.drw-open #drw{transform:none}
+.drw-head{display:flex;justify-content:flex-start}
+.drw-me{text-align:center;padding:8px 0 14px}.drw-me h2{font-size:1.1em;margin:10px 0 0}
+.drw-item{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;padding:14px 8px;border-bottom:1px solid #eef3fb;text-align:start;font-weight:700;color:var(--tx);border-radius:0}
+.drw-ic{width:36px;height:36px;border-radius:12px;background:#eaf2ff;color:var(--ac);display:grid;place-items:center;flex:none}
+.drw-item.danger .drw-ic{background:#fde8e8;color:#c0392b}
+.tabs{left:50%;right:auto;transform:translateX(-50%);width:min(92vw,400px);bottom:10px;padding:5px 8px;background:rgba(255,255,255,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.75);border-radius:999px;box-shadow:0 8px 24px rgba(20,40,75,.12)}
+.tabs button{padding:2px 8px;font-size:.66em;gap:0}
+.tabs svg{width:18px;height:18px}
+.tabs .on::after{bottom:-3px;width:18px;height:3px}
+.bang{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--mu);color:var(--mu);font-size:.72em;font-weight:800;margin-inline-start:6px;vertical-align:middle;cursor:pointer}
+.lg-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.lg-top .icon{border-radius:50%;width:48px;height:48px;background:var(--card);box-shadow:0 4px 12px rgba(20,40,75,.1)}
+.lg-scroll{overflow-x:auto;margin-top:12px;border-radius:18px;background:#f4f8ff;padding:4px 0}
+.lgt{border-collapse:separate;border-spacing:0 6px;width:max-content;min-width:100%;font-size:.85em;direction:rtl}
+.lgt th{color:var(--mu);font-weight:700;padding:8px 10px;white-space:nowrap;background:transparent;border:0}
+.lgt td{background:#fff;padding:9px 10px;text-align:center;border:0;white-space:nowrap}
+.lgt tr td:first-child{border-radius:0 14px 14px 0}.lgt tr td:last-child{border-radius:14px 0 0 14px}
+.lgt tr.me td{background:#eaf2ff}
+.lgt th.today,.lgt td.today{color:var(--ac);font-weight:800}
+.lgt .tot{display:inline-block;min-width:44px;padding:6px 10px;border-radius:12px;background:#eaf2ff;color:var(--ac);font-weight:800}
+.lgt .tot.first{background:var(--ac);color:#fff}
+.dots{color:#aab6cc;letter-spacing:2px}
+.lg-next{margin:8px auto 0;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#f4f8ff;border:0;color:var(--tx)}
+.seg{display:flex;background:#eaf2ff;border-radius:16px;padding:4px;margin-bottom:10px}
+.seg button{flex:1;border:0;background:none;border-radius:12px;padding:8px;color:var(--mu)}
+.seg .on{background:var(--card);color:var(--tx);box-shadow:0 2px 8px rgba(20,40,75,.08);font-weight:800}
+.msgb{padding:12px 0;border-bottom:1px solid #eef3fb}
+button.dark{background:#1d2433;color:#fff;border:0;box-shadow:none}
+button.light{background:var(--card);color:var(--tx);border:1px solid var(--bd);box-shadow:none}
+.tiles .tile,.tile,.tile:nth-child(even){border-radius:26px;margin-top:0}
+.tiles{align-items:stretch}
+.tile{height:100%}
 </style></head><body>
-<div id="app"><div class="c">در حال بارگذاری…</div></div><div style="text-align:center;font-size:11px;color:#888;margin:8px">نسخه ۵.۲</div>
+<div id="app"><div class="c">در حال بارگذاری…</div></div><div id="drw-bg" onclick="closeDrawer()"></div><aside id="drw"></aside><div style="text-align:center;font-size:11px;color:#888;margin:8px">نسخه ۵.۲</div>
 <script>
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
 const SUPABASE_URL = "https://ekmiynpjugfqdnwfofgn.supabase.co";
@@ -238,6 +275,7 @@ const chIcon = cat => {
   return `<span class="ib" style="background:${c}22">${inner}</span>`;
 };
 const TABI = {
+  chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
   submit: '<path d="M5 12l5 5L20 7"/>',
   board: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
   hist: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
@@ -652,24 +690,25 @@ const lvlBonus = L => S.ws.bonus_enabled ? Math.floor(lvlSum(L) * S.ws.bonus_per
 const lvlWin = L => Math.round((lvlSum(L) + lvlBonus(L)) * 7 * S.ws.win_percent / 100);
 const topLevel = () => S.ch.reduce((m, c) => Math.max(m, c.level), 0);
 
+const DRAWER_PAGES = ['hist', 'profile', 'settings', 'achieve', 'chat'];
 function render() {
   const tabs = [];
-  if (S.mode === 'member') tabs.push(['submit', 'ثبت امروز'], ['board', 'لیگ'], ['hist', 'تاریخچه'], ['profile', 'پروفایل']);
-  else if (S.mode === 'archive') tabs.push(['hist', 'سوابق'], ['profile', 'پروفایل']);
+  if (S.mode === 'member') tabs.push(['submit', 'ثبت امروز'], ['board', 'لیگ'], ['chat', 'چت']);
+  else if (S.mode === 'archive') tabs.push(['hist', 'سوابق']);
   else tabs.push(['board', 'لیگ']);
   if (S.isAdmin) tabs.push(['admin', 'مدیریت']);
-  if (!tabs.some(t => t[0] === S.tab)) S.tab = tabs[0][0];
+  if (!tabs.some(t => t[0] === S.tab) && !DRAWER_PAGES.includes(S.tab)) S.tab = tabs[0][0];
   const banner = S.ws?.status === 'stopped' ? '<div class="banner">این لیگ متوقف شده است.</div>'
     : S.ws?.status === 'finished' ? '<div class="banner">این لیگ به پایان رسیده است.</div>' : '';
   const p = S.M?.profile || {};
-  $('#app').innerHTML = `<div class="top">${logo(30)}<span>${esc(S.ws?.name)}</span>
-  <span style="margin-inline-start:auto;display:flex;gap:6px">${installBtn()}<button class="ghost2 small" onclick="wsListView()">⇄ لیگ‌ها</button></span></div>
+  $('#app').innerHTML = `<div class="top">${logo(30)}<span>${esc(S.ws?.name || '')}</span>
+    <button class="prof-btn" onclick="openDrawer()" aria-label="منو">${svg(TABI.profile, 'currentColor', 22)}</button></div>
   <div class="hero"><div><div class="mu2">${fd(S.today, {weekday: 'long', day: 'numeric', month: 'long'})}</div>
-  <h1>سلام ${esc(nmOf(p))} 👋</h1>${S.mode === 'member' ? `<div class="mu2">سطح ${fa(S.M.level)}</div>` : ''}</div>
-  <button class="ghost" data-b onclick="logout()">خروج</button></div>
+  <h1>سلام ${esc(nmOf(p))} 👋</h1>${S.mode === 'member' ? `<div class="mu2">سطح ${fa(S.M.level)}</div>` : ''}</div></div>
   ${banner}<div id="main"></div>
   <nav class="tabs">${tabs.map(([k, v]) => `<button class="${S.tab === k ? 'on' : ''}" onclick="go('${k}')">${svg(TABI[k])}<span>${v}</span></button>`).join('')}</nav>`;
-  ({submit: submitView, board: boardView, hist: histView, profile: profileView, admin: adminView})[S.tab]();
+  renderDrawer();
+  ({submit: submitView, board: boardView, hist: histView, profile: profileView, admin: adminView, chat: chatView, achieve: achieveView, settings: settingsView})[S.tab]();
 }
 function go(k) { S.tab = k; if (k !== 'profile') S.viewId = null; if (k === 'admin') S.adminSub = null; S.edit = null; render(); }
 function openProfile(id) { S.viewId = id; go('profile'); }
@@ -684,9 +723,9 @@ function submitView() {
   ${notStarted ? `<div class="c"><b>ثبت شما از ${fd(S.M.active_from, {day: 'numeric', month: 'long'})} شروع می‌شود.</b></div>` : ''}
   ${!inPeriod && !notStarted ? '<div class="c mu">امروز در هیچ مرحله‌ای از این لیگ نیست.</div>' : ''}
   <div class="c"><div class="mu">چالش‌های مرحله ${fa(L)} — <b>${fd(S.today, {weekday: 'long', day: 'numeric', month: 'long'})}</b></div>
-  ${a.map(c => `<div class="ch-wrap"><label class="ch" style="--cc:${catOf(c)?.color || '#9aa6bf'}"><input type="checkbox" value="${c.id}" ${S.done.has(c.id) ? 'checked' : ''} onchange="tot()">${chIcon(catOf(c))}
-    <span class="ct">${esc(c.title)}<small>${catOf(c) ? esc(catOf(c).name) : ''}</small></span><b class="pt">+${fa(c.base_points)}</b></label>
-    <button type="button" class="info" aria-label="توضیحات" onclick="showInfo('${c.id}')">!</button></div>`).join('')}
+  ${a.map(c => `<label class="ch" style="--cc:${catOf(c)?.color || '#9aa6bf'}"><input type="checkbox" value="${c.id}" ${S.done.has(c.id) ? 'checked' : ''} onchange="tot()">${chIcon(catOf(c))}
+    <span class="ct">${esc(c.title)}${c.description || c.link ? `<span class="bang" onclick="event.preventDefault();event.stopPropagation();showInfo('${c.id}')">!</span>` : ''}<small>${catOf(c) ? esc(catOf(c).name) : ''}</small></span>
+    <b class="pt">${fa(c.base_points)}+</b></label>`).join('')}
   <p id="tot"></p>
   ${inPeriod && !notStarted ? `<button class="p big" onclick="save()">${S.saved ? 'بروزرسانی فعالیت امروز' : 'ثبت فعالیت امروز'}</button>` : ''}
   <p class="mu">برای ثبت یا ویرایش امتیاز روزهای گذشته برو به قسمت تاریخچه</p></div>`;
@@ -728,23 +767,25 @@ async function boardView() {
     (by[r.member_id] ??= {id: r.member_id, name: r.name, level: r.level, d: {}});
     if (r.activity_date) by[r.member_id].d[r.activity_date] = r.daily_total;
   });
-  const rows = Object.values(by).map(m => {
-    const total = days.reduce((s, x) => s + (m.d[x] || 0), 0);
-    return {...m, total};
-  }).sort((a, b) => b.total - a.total);
+  const rows = Object.values(by).map(m => ({...m, total: days.reduce((s, x) => s + (m.d[x] || 0), 0)}))
+    .sort((a, b) => b.total - a.total);
   rows.forEach((r, i) => r.rank = i && r.total === rows[i - 1].total ? rows[i - 1].rank : i + 1);
   const heading = P ? `${fd(P.start_date, {day: 'numeric', month: 'long'})} تا ${fd(P.end_date, {day: 'numeric', month: 'long'})}` : '—';
-  $('#main').innerHTML = `<div class="c">
-  <div class="row nob" style="padding:0"><div><h3 style="margin:0">جدول لیگ ${esc(S.ws?.name)}</h3><div class="mu">${heading}</div></div>
-  <button class="icon" onclick="boardView()" title="به‌روزرسانی" aria-label="به‌روزرسانی">${svg('<path d="M21 12a9 9 0 1 1-2.6-6.3M21 4v5h-5"/>')}</button></div>
-  <div class="w" id="tw" style="margin-top:10px"><table><tr><th>رتبه</th><th>نام</th><th>سطح</th>
-  ${days.map(d => `<th class="${d === S.today ? 'today' : ''}" ${d === S.today ? 'id="todayTh"' : ''}>${fd(d, {weekday: 'long'})}</th>`).join('')}
-  <th>جمع امتیاز</th></tr>
-  ${rows.map(r => `<tr class="${r.id === S.uid ? 'me' : ''}"><td>${['🥇', '🥈', '🥉'][r.rank - 1] || fa(r.rank)}</td>
-  <td><span class="lnk" onclick="openProfile('${r.id}')">${esc(r.name)}</span></td><td>${fa(r.level)}</td>
-  ${days.map(d => `<td class="${d === S.today ? 'today' : ''}">${r.d[d] !== undefined ? fa(r.d[d]) : ''}</td>`).join('')}
-  <td><b>${fa(r.total)}</b></td></tr>`).join('')}</table></div></div>`;
-  const t = $('#todayTh'), w = $('#tw'); if (t && w) w.scrollLeft = t.offsetLeft - w.clientWidth / 2;
+  const cell = (d, v) => d > S.today ? '<span class="dots">···</span>' : (v !== undefined ? fa(v) : '');
+  $('#main').innerHTML = `<div class="c lg">
+    <div class="lg-top"><div><h3>جدول لیگ ${esc(S.ws?.name || '')}</h3><div class="mu">${heading}</div></div>
+    <button class="icon" onclick="boardView()" aria-label="به‌روزرسانی">${svg('<path d="M21 12a9 9 0 1 1-2.6-6.3M21 4v5h-5"/>')}</button></div>
+    <div class="lg-scroll" id="tw"><table class="lgt"><tr><th>رتبه</th><th>نام</th><th>سطح</th>
+    ${days.map(d => `<th class="${d === S.today ? 'today' : ''}" ${d === S.today ? 'id="todayTh"' : ''}>${fd(d, {weekday: 'long'})}</th>`).join('')}
+    <th>جمع کل</th></tr>
+    ${rows.map(r => `<tr class="${r.id === S.uid ? 'me' : ''}"><td>${['🥇', '🥈', '🥉'][r.rank - 1] || fa(r.rank)}</td>
+      <td><span class="lnk" onclick="openProfile('${r.id}')">${esc(r.name)}</span></td><td>${fa(r.level)}</td>
+      ${days.map(d => `<td class="${d === S.today ? 'today' : ''}">${cell(d, r.d[d])}</td>`).join('')}
+      <td><span class="tot ${r.rank === 1 ? 'first' : ''}">${fa(r.total)}</span></td></tr>`).join('')}
+    </table></div>
+    <button class="lg-next" aria-label="حرکت" onclick="document.getElementById('tw').scrollBy({left:-160,behavior:'smooth'})">${svg('<path d="M15 6l-6 6 6 6"/>', 'currentColor', 18)}</button>
+  </div>`;
+  const t = $('#todayTh'); if (t) t.scrollIntoView({inline: 'center', block: 'nearest'});
 }
 
 /* ---------- تاریخچه و ویرایش روزهای گذشته ---------- */
@@ -779,7 +820,7 @@ async function startEdit(d) {
 function editCard() {
   const e = S.edit, a = lvlChallenges(S.M.level);
   return `<div class="c" style="border-color:var(--ac)"><h3>ویرایش ${fd(e.date, {weekday: 'long', day: 'numeric', month: 'long'})}</h3>
-  ${a.map(c => `<label class="ch"><input type="checkbox" value="${c.id}" ${e.done.has(c.id) ? 'checked' : ''}>${chIcon(S.cats.find(k => k.id === c.category_id))}<span class="ct">${esc(c.title)}</span><b class="pt">+${fa(c.base_points)}</b></label>`).join('')}
+  ${a.map(c => `<label class="ch"><input type="checkbox" value="${c.id}" ${e.done.has(c.id) ? 'checked' : ''}>${chIcon(S.cats.find(k => k.id === c.category_id))}<span class="ct">${esc(c.title)}</span><b class="pt">${fa(c.base_points)}+</b></label>`).join('')}
   <button class="p big" onclick="sendEdit()">ارسال درخواست ویرایش</button>
   <button class="ghost2" style="width:100%;margin-top:6px" onclick="S.edit=null;histView()">انصراف</button></div>`;
 }
@@ -812,14 +853,10 @@ async function profileView() {
   if (!mine) return m.innerHTML = head + `<button onclick="go('board')">بازگشت به لیگ</button>`;
   const keys = S.fields.map(f => f.field_key), reqMap = {};
   S.fields.forEach(f => reqMap[f.field_key] = f.required);
-  m.innerHTML = head + `<div class="c"><h3>ویرایش اطلاعات این لیگ</h3>
+  m.innerHTML = head + `<div class="c"><h3>پروفایل شما در لیگ ${esc(S.ws?.name || '')}</h3>
     <div class="f">${formHtml(keys, reqMap, pr)}</div>
     <button class="p big" style="margin-top:12px" onclick="saveProfile()">ذخیره تغییرات</button>
-    ${pr.avatar ? `<button class="small danger" style="margin-top:8px" onclick="removeAvatar()">حذف عکس پروفایل</button>` : ''}</div>
-    <div class="c"><h3>رمز ورود</h3><div class="f"><label class="full">رمز جدید ۵ رقمی (اختیاری)<input id="p_pin" type="password" inputmode="numeric" maxlength="5" dir="ltr"></label></div>
-    <button onclick="changePin()">تغییر رمز</button></div>
-    ${S.isMember ? `<div class="c"><p class="mu">با خروج از لیگ، سوابق فعالیت‌ها و امتیازات باقی می‌ماند و با عضویت دوباره، می‌توانید مراحل را ادامه دهید.</p>
-    <button class="danger" onclick="leaveWs()">خروج از این لیگ</button></div>` : ''}`;
+    ${pr.avatar ? `<button class="small danger" style="margin-top:8px" onclick="removeAvatar()">حذف عکس پروفایل</button>` : ''}</div>`;
 }
 async function saveProfile() {
   const keys = S.fields.map(f => f.field_key), reqMap = {};
@@ -841,7 +878,6 @@ async function changePin() {
   notify(error ? error.message : 'رمز تغییر کرد ✅', !error);
 }
 async function leaveWs() {
-  if (!confirm('از این لیگ خارج می‌شوید؟ سوابق شما باقی می‌ماند.')) return;
   const {error} = await sb.rpc('leave_workspace', {p_ws: S.wid});
   if (error) return notify(error.message, false);
   notify('از لیگ خارج شدید.'); boot();
@@ -1093,6 +1129,103 @@ async function delCat(id) {
   if (!confirm('این دسته حذف شود؟ چالش‌های آن بدون دسته می‌شوند.')) return;
   const {error} = await sb.from('categories').delete().eq('id', id);
   notify(error ? error.message : 'دسته حذف شد', !error); reload();
+}
+
+
+// ---- منوی کشویی ----
+const DRW_ICONS = {
+  profile: TABI.profile, achieve: TABI.board, hist: TABI.hist, settings: TABI.admin, chat: TABI.chat,
+  leagues: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>'};
+function openDrawer() { renderDrawer(); document.body.classList.add('drw-open'); }
+function closeDrawer() { document.body.classList.remove('drw-open'); }
+function renderDrawer() {
+  const d = $('#drw'); if (!d) return;
+  const p = S.M?.profile || {}, member = S.mode === 'member', arch = S.mode === 'archive';
+  const item = (key, label, action, show = true, cls = '') => show ? `<button class="drw-item ${cls}" onclick="${action}"><span class="drw-ic">${svg(DRW_ICONS[key], 'currentColor', 20)}</span><span>${label}</span></button>` : '';
+  d.innerHTML = `<div class="drw-head"><button class="ghost2 small" onclick="closeDrawer()">بستن</button></div>
+    <div class="drw-me">${av(p, 104)}<h2>${esc(S.M ? nmOf(p) : (S.me?.display_name || ''))}</h2></div>
+    ${item('profile', 'پروفایل', "drawerGo('profile')", member)}
+    ${item('achieve', 'افتخارات', "drawerGo('achieve')", member || arch)}
+    ${item('hist', 'تاریخچه', "drawerGo('hist')", member || arch)}
+    ${item('settings', 'تنظیمات', "drawerGo('settings')", member)}
+    ${item('chat', 'پیام‌ها', "drawerGo('chat')", member)}
+    ${item('leagues', 'لیگ‌ها', "drawerGo('wsList')")}
+    ${item('logout', 'خروج از حساب', 'logout()', true, 'danger')}`;
+}
+function drawerGo(k) {
+  closeDrawer();
+  if (k === 'wsList') return wsListView();
+  if (k === 'profile') S.viewId = null;
+  if (k === 'chat') S.chatTab = S.chatTab || 'in';
+  go(k);
+}
+
+// ---- افتخارات ----
+async function achieveView() {
+  const m = $('#main');
+  const {data: p, error} = await sb.rpc('get_member_profile', {p_id: S.uid, p_ws: S.wid});
+  if (error || !p) return m.innerHTML = `<div class="c">${error ? esc(error.message) : 'اطلاعاتی پیدا نشد.'}</div>`;
+  const passed = (p.history || []).filter(h => String(h.result).includes('تکمیل')).length;
+  const items = [];
+  if (p.rank <= 3) items.push({i: ['🥇', '🥈', '🥉'][p.rank - 1], t: `رتبه ${fa(p.rank)} در لیگ`, d: 'بر اساس امتیاز کل شما در این لیگ'});
+  if (passed) items.push({i: '⭐', t: `${fa(passed)} بار حد پیروزی را گرفتید`, d: 'هر بار که به سطح بالاتر رفتید'});
+  if (p.status === 'completed') items.push({i: '🏁', t: 'مسیر این لیگ را تکمیل کردید', d: ''});
+  if (p.best_streak >= 3) items.push({i: '🔥', t: `بیشترین استریک: ${fa(p.best_streak)} روز`, d: ''});
+  m.innerHTML = `<div class="c"><h3>افتخارات شما</h3>${items.length
+    ? items.map(x => `<div class="row" style="justify-content:flex-start"><span style="font-size:28px">${x.i}</span><div><b>${esc(x.t)}</b>${x.d ? `<div class="mu">${esc(x.d)}</div>` : ''}</div></div>`).join('')
+    : '<p class="mu">هنوز افتخاری ندارید. با ثبت فعالیت روزانه افتخار کسب کنید.</p>'}</div>`;
+}
+
+// ---- تنظیمات ----
+function settingsView() {
+  $('#main').innerHTML = `<div class="c"><h3>تغییر رمز ورود</h3>
+    <div class="f"><label class="full">رمز جدید ۵ رقمی<input id="p_pin" type="password" inputmode="numeric" maxlength="5" dir="ltr"></label></div>
+    <button class="p big" style="margin-top:10px" onclick="changePin()">ذخیره رمز جدید</button></div>
+    <div class="c"><h3>حذف حساب کاربری</h3><p class="mu">با حذف حساب کاربری، از این لیگ خارج می‌شوید.</p>
+    <button class="dark big" onclick="confirmDelete()">حذف حساب کاربری</button></div>`;
+}
+function confirmDelete() {
+  openModal(`<h3>حذف حساب کاربری</h3>
+    <p>با حذف حساب کاربری، از لیگ خارج می‌شوید و برای بازگشت به لیگ، باید دوباره مسیر عضویت را طی کنید.</p>
+    <button class="dark big" onclick="closeModal();leaveWs()">حذف کاربری</button>
+    <button class="light big" style="margin-top:8px" onclick="closeModal()">انصراف</button>`);
+}
+
+// ---- پیام‌ها ----
+async function chatView(tab) {
+  if (tab) S.chatTab = tab;
+  S.chatTab = S.chatTab || 'in';
+  const m = $('#main');
+  const seg = `<div class="seg">${[['in', 'دریافتی'], ['out', 'ارسالی'], ['new', 'پیام جدید']].map(([k, l]) =>
+    `<button class="${S.chatTab === k ? 'on' : ''}" onclick="chatView('${k}')">${l}</button>`).join('')}</div>`;
+  const {data: mem} = await sb.rpc('get_scores', {p_ws: S.wid, p_from: S.today});
+  const NAME = {}; (mem || []).forEach(r => NAME[r.member_id] = r.name);
+  if (S.chatTab === 'new') {
+    const opts = Object.entries(NAME).filter(([id]) => id !== S.uid).map(([id, n]) => `<option value="${id}">${esc(n)}</option>`).join('');
+    m.innerHTML = seg + `<div class="c"><h3>پیام جدید</h3>
+      <label class="mu">گیرنده<select id="msg_to"><option value="">انتخاب کنید</option>${opts}</select></label>
+      <label class="mu" style="margin-top:8px">متن پیام<textarea id="msg_body" rows="4" maxlength="1000"></textarea></label>
+      <button class="p big" style="margin-top:10px" onclick="sendMsg()">ارسال پیام</button></div>`;
+    return;
+  }
+  const col = S.chatTab === 'in' ? 'recipient_id' : 'sender_id';
+  const {data, error} = await sb.from('messages').select('*').eq('workspace_id', S.wid).eq(col, S.uid).order('created_at', {ascending: false}).limit(100);
+  if (error) return m.innerHTML = seg + `<div class="c msg err">${esc(error.message)}</div>`;
+  const rows = (data || []).map(x => {
+    const who = S.chatTab === 'in' ? NAME[x.sender_id] : NAME[x.recipient_id];
+    const t = new Date(x.created_at).toLocaleString('fa-IR-u-ca-persian', {timeZone: 'Asia/Tehran', dateStyle: 'medium', timeStyle: 'short'});
+    return `<div class="msgb"><div class="mu">${S.chatTab === 'in' ? 'از ' : 'به '}${esc(who || '—')} · ${t}</div><div>${esc(x.body)}</div></div>`;
+  }).join('');
+  m.innerHTML = seg + `<div class="c">${rows || '<p class="mu">پیامی نیست.</p>'}</div>`;
+}
+async function sendMsg() {
+  const to = $('#msg_to').value, body = $('#msg_body').value.trim();
+  if (!to) return notify('گیرنده را انتخاب کنید', false);
+  if (!body) return notify('متن پیام خالی است', false);
+  const {error} = await sb.from('messages').insert({workspace_id: S.wid, sender_id: S.uid, recipient_id: to, body});
+  if (error) return notify('ارسال نشد: ' + error.message, false);
+  notify('پیام ارسال شد ✅'); chatView('out');
 }
 
 boot().catch(e => showFatal(e.message || String(e)));
