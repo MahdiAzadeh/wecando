@@ -632,6 +632,9 @@ async function wsListView() {
     return `<div class="row"><b>${esc(name)}</b><div style="display:flex;gap:8px;align-items:center"><span class="tag">${label}</span>${btn}</div></div>`;
   }).join('');
   const pub = all.filter(w => w.visibility === 'public' && !mine[w.id] && w.status === 'active');
+  const {data: invs} = await sb.rpc('my_invitations');
+  const invHtml = (invs || []).filter(x => !mine[x.workspace_id] || mine[x.workspace_id].status === 'removed' || mine[x.workspace_id].status === 'left')
+    .map(x => card(x.name, '<span class="badge-inv">دعوت شده</span>', `<button class="p small" onclick="joinInvitee('${x.workspace_id}')">پذیرش</button>`)).join('');
   const pubHtml = pub.map(w => `<div class="row"><b>${esc(w.name)}</b><button class="p small" onclick="joinForm('${w.id}')">عضویت</button></div>`).join('');
   let superBlock = '';
   if (S.isSuper) {
@@ -658,6 +661,7 @@ async function wsListView() {
   }
   $('#app').innerHTML = `<div class="top">${logo(30, S.platformLogo)}<span>چالشکده</span><span style="margin-inline-start:auto">${installBtn()}<button class="ghost2 small" onclick="logout()">خروج</button></span></div>
   <div class="hero"><div><h1>سلام ${esc(nmOf(S.me))} 👋</h1></div></div>
+  ${invHtml ? `<div class="c"><h3>دعوت شده‌اید</h3>${invHtml}</div>` : ''}
   ${mineHtml ? `<div class="c"><h3>لیگ‌های من</h3>${mineHtml}</div>` : '<div class="c mu">هنوز در هیچ لیگی عضو نیستید.</div>'}
   ${pubHtml ? `<div class="c"><h3>لیگ گردی</h3><p class="mu">لیگ‌هایی که می‌توانید عضوشان شوید</p>${pubHtml}</div>` : ''}
   ${superBlock}`;
@@ -691,16 +695,29 @@ async function inviteJoinView(token) {
   <button class="ghost2" style="width:100%;margin-top:6px" onclick="localStorage.removeItem('wcd_join');boot()">انصراف</button></div>`;
 }
 async function wsListViewSafe() { const mm = await sb.from('memberships').select('workspace_id,role,status,level').eq('user_id', S.uid); S.mships = mm.data || []; wsListView(); }
+async function joinInvitee(wsId) {
+  const {data, error} = await sb.rpc('invite_join_info_ws', {p_ws: wsId});
+  if (error || !data) return notify(error?.message || 'این دعوت پیدا نشد', false);
+  const reqMap = {}; data.fields.forEach(f => reqMap[f.key] = f.required);
+  const keys = data.fields.map(f => f.key).filter(k => k !== 'avatar');
+  S.join = {wsId, keys, reqMap, token: null, invitee: true};
+  $('#app').innerHTML = `<div class="top"><span>${esc(data.name)}</span></div>
+    <div class="c"><h3>پذیرش دعوت</h3><p class="mu">برای ورود به لیگ، اطلاعات زیر را تکمیل کنید.</p>
+    <div class="f">${formHtml(keys, reqMap)}</div>
+    <button class="p big" style="margin-top:12px" onclick="submitJoin()">پذیرش عضویت</button>
+    <button class="ghost2" style="width:100%;margin-top:6px" onclick="wsListView()">بازگشت</button></div>`;
+}
 async function submitJoin() {
-  const {wsId, keys, reqMap, token} = S.join;
+  const {wsId, keys, reqMap, token, invitee} = S.join;
   const {data, errs} = await readForm(keys, reqMap);
   if (errs.length) return notify(errs[0], false);
-  const rpc = token ? sb.rpc('join_by_invite', {p_token: token, p_profile: data})
-                    : sb.rpc('join_public_workspace', {p_ws: wsId, p_profile: data});
+  const rpc = invitee ? sb.rpc('join_as_invitee', {p_ws: wsId, p_profile: data})
+    : token ? sb.rpc('join_by_invite', {p_token: token, p_profile: data})
+    : sb.rpc('join_public_workspace', {p_ws: wsId, p_profile: data});
   const {data: res, error} = await rpc;
   if (error) return notify(error.message, false);
   if (token) localStorage.removeItem('wcd_join');
-  notify(token || res === 'active' ? 'عضو لیگ شدید ✅' : 'درخواست شما ثبت شد و منتظر تایید ادمین است.');
+  notify(invitee || token || res === 'active' ? 'عضو لیگ شدید ✅' : 'درخواست شما ثبت شد و منتظر تایید ادمین است.');
   boot();
 }
 async function createWs() {
