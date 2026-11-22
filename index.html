@@ -114,7 +114,7 @@ button.p{background:var(--ac2);box-shadow:0 8px 18px rgba(23,48,95,.25);border:0
 button.p:active{box-shadow:0 2px 6px rgba(23,48,95,.25)}
 button.big{padding:16px;border-radius:18px}
 button.small{border-radius:12px}
-.stat{background:linear-gradient(135deg,#eaf2ff,#f7fbff);border-radius:24px;box-shadow:none;padding:16px 18px}
+.stat{background:linear-gradient(135deg,var(--acs),#f7fbff);border-radius:24px;box-shadow:none;padding:16px 18px}
 .stat::after{content:"🏆";font-size:36px;margin-inline-start:auto;flex:none}
 .stat .big2{font-size:1.35em}
 .ring{background:conic-gradient(var(--ac) calc(var(--p)*1%),#e3eaf7 0)}
@@ -126,8 +126,8 @@ button.small{border-radius:12px}
 .ch .ib{width:50px;height:50px;border-radius:16px}
 .ch .ct{font-weight:700}
 .ch .ct small{color:var(--mu)}
-.pt{background:#eaf2ff;color:var(--ac);border-radius:14px;padding:8px 12px;font-weight:800;min-width:46px;text-align:center}
-#tot{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#eaf2ff;border-radius:18px;padding:12px 16px;margin:14px 0;font-weight:700;color:var(--tx)}
+.pt{background:var(--acs);color:var(--ac);border-radius:14px;padding:8px 12px;font-weight:800;min-width:46px;text-align:center}
+#tot{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--acs);border-radius:18px;padding:12px 16px;margin:14px 0;font-weight:700;color:var(--tx)}
 #tot .chip{background:transparent;padding:0;margin:0;font-weight:600;color:var(--mu)}
 #tot .sum{color:var(--tx);font-weight:800}
 .tabs{left:12px;right:12px;bottom:12px;border-radius:26px;border:none;box-shadow:0 12px 32px rgba(20,40,75,.16);padding:8px 6px calc(8px + env(safe-area-inset-bottom));justify-content:space-around}
@@ -139,7 +139,7 @@ button.small{border-radius:12px}
 .tile:nth-child(even){border-radius:34px 26px 34px 26px}
 .tico{border-radius:18px}
 .av{box-shadow:0 0 0 3px var(--card)}
-.tag{background:#eaf2ff;color:var(--ac);font-weight:700}
+.tag{background:var(--acs);color:var(--ac);font-weight:700}
 .row{border-bottom:1px solid #eef3fb}
 .toast{border-radius:16px}
 .banner{background:#fff4e0;color:#8a5a00;border-radius:16px}
@@ -148,7 +148,7 @@ button.small{border-radius:12px}
 .jd select{background:#f3f7fd}
 table{border-spacing:0}
 td,th{border-bottom:1px solid #eef3fb}
-tr.me td{background:#eaf2ff}
+tr.me td{background:var(--acs)}
 .prof-btn{width:44px;height:44px;border-radius:50%;padding:0;display:grid;place-items:center;margin-inline-start:auto;background:var(--card);box-shadow:0 4px 12px rgba(20,40,75,.1);border:0;color:var(--tx)}
 #drw-bg{position:fixed;inset:0;background:rgba(10,20,45,.35);opacity:0;pointer-events:none;transition:opacity .3s;z-index:25}
 body.drw-open #drw-bg{opacity:1;pointer-events:auto}
@@ -157,7 +157,7 @@ body.drw-open #drw{transform:none}
 .drw-head{display:flex;justify-content:flex-start}
 .drw-me{text-align:center;padding:8px 0 14px}.drw-me h2{font-size:1.1em;margin:10px 0 0}
 .drw-item{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;padding:14px 8px;border-bottom:1px solid #eef3fb;text-align:start;font-weight:700;color:var(--tx);border-radius:0}
-.drw-ic{width:36px;height:36px;border-radius:12px;background:#eaf2ff;color:var(--ac);display:grid;place-items:center;flex:none}
+.drw-ic{width:36px;height:36px;border-radius:12px;background:var(--acs);color:var(--ac);display:grid;place-items:center;flex:none}
 .drw-item.danger .drw-ic{background:#fde8e8;color:#c0392b}
 .tabs{left:50%;right:auto;transform:translateX(-50%);width:min(92vw,400px);bottom:10px;padding:5px 8px;background:rgba(255,255,255,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.75);border-radius:999px;box-shadow:0 8px 24px rgba(20,40,75,.12)}
 .tabs button{padding:2px 8px;font-size:.66em;gap:0}
@@ -171,13 +171,13 @@ body.drw-open #drw{transform:none}
 .lgt th{color:var(--mu);font-weight:700;padding:8px 10px;white-space:nowrap;background:transparent;border:0}
 .lgt td{background:#fff;padding:9px 10px;text-align:center;border:0;white-space:nowrap}
 .lgt tr td:first-child{border-radius:0 14px 14px 0}.lgt tr td:last-child{border-radius:14px 0 0 14px}
-.lgt tr.me td{background:#eaf2ff}
+.lgt tr.me td{background:var(--acs)}
 .lgt th.today,.lgt td.today{color:var(--ac);font-weight:800}
-.lgt .tot{display:inline-block;min-width:44px;padding:6px 10px;border-radius:12px;background:#eaf2ff;color:var(--ac);font-weight:800}
+.lgt .tot{display:inline-block;min-width:44px;padding:6px 10px;border-radius:12px;background:var(--acs);color:var(--ac);font-weight:800}
 .lgt .tot.first{background:var(--ac);color:#fff}
 .dots{color:#aab6cc;letter-spacing:2px}
 .lg-next{margin:8px auto 0;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#f4f8ff;border:0;color:var(--tx)}
-.seg{display:flex;background:#eaf2ff;border-radius:16px;padding:4px;margin-bottom:10px}
+.seg{display:flex;background:var(--acs);border-radius:16px;padding:4px;margin-bottom:10px}
 .seg button{flex:1;border:0;background:none;border-radius:12px;padding:8px;color:var(--mu)}
 .seg .on{background:var(--card);color:var(--tx);box-shadow:0 2px 8px rgba(20,40,75,.08);font-weight:800}
 .msgb{padding:12px 0;border-bottom:1px solid #eef3fb}
@@ -228,6 +228,37 @@ button.big{padding:12px;font-size:.92em;border-radius:15px}
 .bt{font-size:.68em;opacity:.7;margin-top:2px}
 .gbox{display:flex;gap:8px;margin-top:8px;padding-bottom:70px}
 .gbox input{flex:1}
+:root{--acs:color-mix(in srgb,var(--ac) 12%,#ffffff)}
+#main{animation:fadeUp .35s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.mbox{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,420px);max-height:80vh;overflow:auto}
+.lg-scroll{scrollbar-width:none}.lg-scroll::-webkit-scrollbar{display:none}
+button:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}
+.spin svg{animation:sp .8s linear infinite}
+.prof-head{text-align:center}
+.av-actions{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:8px}
+.tipw{position:relative;display:inline-block;margin-inline-start:4px;vertical-align:middle}
+.tipb{width:17px;height:17px;padding:0;border-radius:50%;border:1.3px solid var(--mu);color:var(--mu);background:none;font-size:.7em;font-weight:800;line-height:1}
+.tipbox{display:none;position:absolute;bottom:24px;inset-inline-start:-8px;background:var(--tx);color:var(--card);padding:6px 10px;border-radius:10px;font-size:.8em;white-space:nowrap;z-index:5}
+.tipw.open .tipbox{display:block}
+.themes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}
+.theme{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:16px;background:var(--card);border:2px solid transparent;font-size:.75em;box-shadow:0 2px 8px rgba(20,40,75,.08)}
+.theme.sel{border-color:var(--ac)}
+.sw2{width:34px;height:34px;border-radius:50%;display:block}
+.backb{display:inline-flex;align-items:center;gap:4px;background:var(--card);border:0;border-radius:999px;padding:7px 12px;box-shadow:0 2px 10px rgba(20,40,75,.08);font-weight:700;color:var(--tx)}
+.linkrow{display:flex;gap:8px;align-items:center;margin-top:8px;width:100%}
+.linkbtn{flex:1;min-width:0;text-align:start;background:#f3f7fd;border:0;border-radius:12px;padding:10px;font-size:.8em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gchat{display:block;height:auto;padding-bottom:150px}
+.gbox{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);width:min(92vw,400px);margin:0;padding:8px;background:var(--card);border-radius:20px;box-shadow:0 8px 24px rgba(20,40,75,.14);z-index:4}
+.gbox input{border:1px solid var(--bd)}
+.gbox input:focus{border-color:var(--ac)}
+.grow{display:flex;gap:8px}
+.quote{border-inline-start:3px solid var(--ac);padding:4px 8px;margin-bottom:4px;background:rgba(127,140,170,.12);border-radius:8px;font-size:.8em}
+.bact{display:inline-flex;gap:8px;margin-inline-start:8px}
+.bact button{background:none;border:0;padding:0;color:var(--ac);font-size:.78em;font-weight:700}
+.pinbar{background:var(--acs);border-radius:14px;padding:8px 12px;font-size:.84em;margin-bottom:8px}
+.rbar{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--acs);border-radius:12px;padding:6px 10px;font-size:.8em;margin-bottom:6px}
+.lgt td:nth-child(3) .tot{min-width:40px}
 </style></head><body>
 <div id="app"></div><div id="drw-bg" onclick="closeDrawer()"></div><aside id="drw"></aside><div style="text-align:center;font-size:11px;color:#888;margin:8px">نسخه ۵.۲</div>
 <script>
@@ -455,6 +486,7 @@ async function pickUpload(catId) {
   const f = $('#ic_up_' + catId).files[0]; if (!f) return;
   S.iconDraft[catId] = await resizeImg(f, 96, 'image/png'); closeModal(); adminView();
 }
+const tipHtml = text => `<span class="tipw"><button type="button" class="tipb" onclick="this.parentNode.classList.toggle('open')">!</button><span class="tipbox">${text}</span></span>`;
 function formHtml(keys, reqMap, cur = {}) {
   return keys.map(k => {
     const m = FIELDS[k], req = reqMap[k] ? ' <span style="color:#a12a2a">*</span>' : '';
@@ -468,7 +500,7 @@ function formHtml(keys, reqMap, cur = {}) {
     else if (m.t === 'email') inp = `<input id="f_${k}" type="email" dir="ltr" value="${esc(cur[k])}">`;
     else inp = `<input id="f_${k}" value="${esc(cur[k])}">`;
     const wide = ['jdate', 'area', 'file', 'loc'].includes(m.t) ? 'full' : '';
-    return `<div class="${wide}"><div class="mu" style="font-size:.85em">${m.l}${req}</div>${inp}</div>`;
+    return `<div class="${wide}"><div class="mu" style="font-size:.85em">${m.l}${k === 'nickname' ? tipHtml('نام نمایشی برای سایر اعضای لیگ') : ''}${req}</div>${inp}</div>`;
   }).join('');
 }
 // خواندن فرم؛ اگر مقدار قبلی وجود داشته باشد، خالی بودن الزامی نیست
@@ -704,7 +736,7 @@ async function openWs(id, tab) {
   if (wr.error || !w) return notify('این لیگ در دسترس نیست', false);
   if (ch.error || wk.error) return notify('خطا در دریافت اطلاعات لیگ', false);
   const M = mm.data || null;
-  S.ws = w; S.wid = id; S.M = M; S.edit = null;
+  S.ws = w; S.wid = id; S.M = M; S.edit = null; S.themeDraft = null;
   S.isMember = !!M && M.status === 'active';
   S.mode = S.isMember ? 'member' : (M ? 'archive' : 'guest');
   S.isAdmin = S.isSuper || (S.isMember && M.role === 'admin');
@@ -719,10 +751,15 @@ async function openWs(id, tab) {
   render();
 }
 function reload() { return openWs(S.wid, S.tab); }
-function applyPalette(p) {
-  const r = document.documentElement.style;
-  r.setProperty('--ac', p?.primary || '#2f7bf6'); r.setProperty('--ac2', p?.dark || '#17305f');
-}
+const THEMES = [
+  {key: 'blue', name: 'آبی', primary: '#2f7bf6', dark: '#17305f'},
+  {key: 'green', name: 'سبز', primary: '#2f9e6b', dark: '#1f5f42'},
+  {key: 'purple', name: 'بنفش', primary: '#7c5cc4', dark: '#3f2f7a'},
+  {key: 'orange', name: 'نارنجی', primary: '#e8833a', dark: '#7a3d12'},
+  {key: 'rose', name: 'صورتی', primary: '#d1537f', dark: '#6e1f40'}];
+const themeObj = () => { const key = S.themeDraft || S.ws?.palette?.key || 'blue'; const t = THEMES.find(x => x.key === key) || THEMES[0]; return {key: t.key, primary: t.primary, dark: t.dark}; };
+function pickTheme(k) { S.themeDraft = k; document.querySelectorAll('.theme').forEach(b => b.classList.toggle('sel', b.dataset.k === k)); }
+function applyPalette(p) { const th = THEMES.find(t => t.key === p?.key) || THEMES[0]; const r = document.documentElement.style; r.setProperty('--ac', p?.primary || th.primary); r.setProperty('--ac2', p?.dark || th.dark); }
 // دوره جاری (مرحله‌ی ۷ روزه‌ای که امروز در آن است؛ اگر نیست، نزدیک‌ترین)
 function curPeriod() {
   const open = S.weeks.filter(w => w.status !== 'closed');
@@ -773,7 +810,7 @@ function submitView() {
     <span class="ct">${esc(c.title)}${c.description || c.link ? `<span class="bang" onclick="event.preventDefault();event.stopPropagation();showInfo('${c.id}')">!</span>` : ''}<small>${catOf(c) ? esc(catOf(c).name) : ''}</small></span>
     <b class="pt">${fa(c.base_points)}+</b></label>`).join('')}
   <p id="tot"></p>
-  ${inPeriod && !notStarted ? `<button class="p big" onclick="save()">${S.saved ? 'به‌روز رسانی فعالیت امروز' : 'ثبت فعالیت امروز'}</button>` : ''}
+  ${inPeriod && !notStarted ? `<button class="p big" id="saveBtn" disabled onclick="save()">${S.saved ? 'به‌روز رسانی فعالیت امروز' : 'ثبت فعالیت امروز'}</button>` : ''}
   <p class="mu">برای ثبت یا ویرایش امتیاز روزهای گذشته برو به قسمت تاریخچه</p></div>`;
   tot(); summary();
 }
@@ -782,6 +819,7 @@ function tot() {
   const done = a.filter(c => ck.includes(c.id)), base = done.reduce((s, c) => s + c.base_points, 0);
   const all = a.length && done.length === a.length, bonus = all && S.ws.bonus_enabled ? lvlBonus(L) : 0;
   $('#tot').innerHTML = `<span class="chip">امتیاز پایه ${fa(base)}</span><span class="chip">پاداش ${fa(bonus)}</span><b class="sum">مجموع ${fa(base + bonus)}</b>`;
+  const same = ck.length === S.done.size && ck.every(x => S.done.has(x)); const sbtn = $('#saveBtn'); if (sbtn) sbtn.disabled = same;
 }
 async function summary() {
   const P = curPeriod(); if (!P) return;
@@ -803,7 +841,8 @@ async function save() {
 }
 
 /* ---------- لیدربورد: ستون‌های روزهای دوره‌ی جاری ---------- */
-async function boardView() {
+async function boardView(refresh) {
+  if (refresh) document.querySelector('.lg-top .icon')?.classList.add('spin');
   const P = curPeriod();
   const {data, error} = await sb.rpc('get_scores', {p_ws: S.wid, p_from: P ? P.start_date : S.today});
   if (error) return $('#main').innerHTML = `<div class="msg err">${esc(error.message)}</div>`;
@@ -820,23 +859,24 @@ async function boardView() {
   const cell = (d, v) => d > S.today ? '<span class="dash">—</span>' : (v !== undefined ? fa(v) : '');
   $('#main').innerHTML = `<div class="c lg">
     <div class="lg-top"><div><h3>جدول لیگ ${esc(S.ws?.name || '')}</h3><div class="mu">${heading}</div></div>
-    <button class="icon" onclick="boardView()" aria-label="به‌روز رسانی">${svg('<path d="M21 12a9 9 0 1 1-2.6-6.3M21 4v5h-5"/>')}</button></div>
-    <div class="lg-scroll" id="tw"><table class="lgt"><tr><th>رتبه</th><th>نام</th><th>سطح</th><th class="dots">···</th>
+    <button class="icon" onclick="boardView(true)" aria-label="به‌روز رسانی">${svg('<path d="M21 12a9 9 0 1 1-2.6-6.3M21 4v5h-5"/>')}</button></div>
+    <div class="lg-scroll" id="tw"><table class="lgt"><tr><th>رتبه</th><th>نام</th><th>جمع کل</th>
     ${days.map(d => `<th class="${d === S.today ? 'today' : ''}" ${d === S.today ? 'id="todayTh"' : ''}>${fd(d, {weekday: 'long'})}</th>`).join('')}
-    <th>جمع کل</th></tr>
+    <th>سطح</th></tr>
     ${rows.map(r => `<tr class="${r.id === S.uid ? 'me' : ''}"><td>${['🥇', '🥈', '🥉'][r.rank - 1] || fa(r.rank)}</td>
-      <td><span class="lnk" onclick="openProfile('${r.id}')">${esc(r.name)}</span></td><td>${fa(r.level)}</td><td class="dots">···</td>
+      <td><span class="lnk" onclick="openProfile('${r.id}')">${esc(r.name)}</span></td>
+      <td><span class="tot ${r.rank === 1 ? 'first' : ''}">${fa(r.total)}</span></td>
       ${days.map(d => `<td class="${d === S.today ? 'today' : ''}">${cell(d, r.d[d])}</td>`).join('')}
-      <td><span class="tot ${r.rank === 1 ? 'first' : ''}">${fa(r.total)}</span></td></tr>`).join('')}
+      <td>${fa(r.level)}</td></tr>`).join('')}
     </table></div>
     <div class="lg-track"><i id="lg-thumb"></i></div>
   </div>`;
   const tw = $('#tw'), th = $('#lg-thumb');
   const upd = () => {
-    const w = tw.clientWidth / tw.scrollWidth * 100, max = tw.scrollWidth - tw.clientWidth;
-    th.style.width = Math.min(100, w) + '%';
+    const w = Math.min(100, tw.clientWidth / tw.scrollWidth * 100), max = tw.scrollWidth - tw.clientWidth;
+    th.style.width = w + '%';
     const f = max > 0 ? Math.abs(tw.scrollLeft) / max : 0;
-    th.style.insetInlineStart = (f * (100 - Math.min(100, w))) + '%';
+    th.style.insetInlineStart = (f * (100 - w)) + '%';
   };
   tw.addEventListener('scroll', upd); upd();
   const t = $('#todayTh'); if (t) t.scrollIntoView({inline: 'center', block: 'nearest'});
@@ -893,9 +933,13 @@ async function profileView() {
   if (error || !p) return m.innerHTML = `<div class="c">${error ? esc(error.message) : 'این عضو در این لیگ پیدا نشد.'}</div>`;
   const pr = p.profile || {};
   const pos = pr.location ? pr.location.split(',') : null;
-  const hist = (p.history || []).map(h => `<div class="row"><span>سطح ${fa(h.level)}</span><span class="mu">${fa(h.score)} از ${fa(h.threshold)} — ${esc(h.result)}</span></div>`).join('');
-  const head = `<div class="c" style="text-align:center">${av(pr, 96)}
-    <h2 style="margin:8px 0 2px">${esc(nmOf(pr))}</h2>
+  const all = (p.history || []).slice().reverse();
+  const row = h => `<div class="row"><span>سطح ${fa(h.level)}</span><span class="mu">${fa(h.score)} از ${fa(h.threshold)} — ${esc(h.result)}</span></div>`;
+  const histHtml = all.length ? `<div class="c"><h3>سابقه مراحل</h3>${all.slice(0, 5).map(row).join('')}
+    <div id="histMore" style="display:none">${all.slice(5).map(row).join('')}</div>
+    ${all.length > 5 ? '<button class="ghost2 small" style="width:100%;margin-top:8px" onclick="toggleHist(this)">نمایش بیشتر</button>' : ''}</div>` : '';
+  const head = `<div class="c prof-head">${av(pr, 104)}
+    <h2 style="margin:10px 0 2px">${esc(nmOf(pr))}</h2>
     <div><span class="chip">سطح ${fa(p.level)}</span>${p.status === 'completed' ? '<span class="tag">مسیر تکمیل شد</span>' : ''}</div>
     ${p.joined_at ? `<div class="mu">عضو از ${fd(p.joined_at.slice(0, 10), {day: 'numeric', month: 'long', year: 'numeric'})}</div>` : ''}
     ${pr.bio ? `<p>${esc(pr.bio)}</p>` : ''}
@@ -903,16 +947,27 @@ async function profileView() {
     <div class="stat" style="justify-content:center;margin-top:8px">
       <div><div class="big2">${fa(p.total)}</div><div class="mu">امتیاز کل</div></div>
       <div><div class="big2">${fa(p.rank)}</div><div class="mu">رتبه در لیگ</div></div>
-      <div><div class="big2 fire">🔥 ${fa(p.best_streak)}</div><div class="mu">بیشترین استریک</div></div></div></div>
-    ${hist ? `<div class="c"><h3>سابقه مراحل</h3>${hist}</div>` : ''}`;
-  if (!mine) return m.innerHTML = head + `<button onclick="go('board')">بازگشت به لیگ</button>`;
-  const keys = S.fields.map(f => f.field_key), reqMap = {};
+      <div><div class="big2 fire">🔥 ${fa(p.best_streak)}</div><div class="mu">بیشترین استریک</div></div></div>
+    ${mine ? `<div class="av-actions">${fileBtn('p_av', 'تغییر عکس', 'uploadAvatar(this)')}${pr.avatar ? '<button class="small danger" type="button" onclick="removeAvatar()">حذف عکس</button>' : ''}</div>` : ''}
+    </div>`;
+  if (!mine) return m.innerHTML = head + histHtml + `<button onclick="go('board')">بازگشت به لیگ</button>`;
+  const keys = S.fields.map(f => f.field_key).filter(k => k !== 'avatar'), reqMap = {};
   S.fields.forEach(f => reqMap[f.field_key] = f.required);
   m.innerHTML = head + `<div class="c"><h3>پروفایل شما در لیگ ${esc(S.ws?.name || '')}</h3>
     <div class="f">${formHtml(keys, reqMap, pr)}</div>
-    <button class="p big" style="margin-top:12px" onclick="saveProfile()">ذخیره تغییرات</button>
-    ${pr.avatar ? `<button class="small danger" style="margin-top:8px" onclick="removeAvatar()">حذف عکس پروفایل</button>` : ''}</div>`;
+    <button class="p big" style="margin-top:12px" onclick="saveProfile()">ذخیره تغییرات</button></div>` + histHtml;
 }
+function toggleHist(btn) { const el = $('#histMore'); const open = el.style.display === 'none'; el.style.display = open ? 'block' : 'none'; btn.textContent = open ? 'نمایش کمتر' : 'نمایش بیشتر'; }
+async function uploadAvatar(inp) {
+  const f = inp.files[0]; if (!f) return;
+  try {
+    const avatar = await resizeImg(f, 256);
+    const {error} = await sb.rpc('update_member_profile', {p_ws: S.wid, p_profile: {avatar}});
+    if (error) throw error;
+    notify('عکس ذخیره شد ✅'); reload();
+  } catch (e) { notify('عکس ذخیره نشد: ' + (e.message || e), false); }
+}
+
 async function saveProfile() {
   const keys = S.fields.map(f => f.field_key), reqMap = {};
   S.fields.forEach(f => reqMap[f.field_key] = f.required);
@@ -957,7 +1012,7 @@ const ADM = [
   {k: 'cat', t: 'دسته‌ها', d: 'نام، رنگ و آیکون', c: '#d1537f', i: '<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>'},
   {k: 'fld', t: 'فیلدهای پروفایل', d: 'اجباری و قابل مشاهده', c: '#2a9d8f', i: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'},
   {k: 'set', t: 'تنظیمات لیگ', d: 'نام، پاداش، رنگ و لوگو', c: '#6b7a72', i: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'}];
-const admHead = title => `<div class="admhead"><button class="ghost2 small" onclick="adminHub()">بازگشت</button><h2>${title}</h2></div>`;
+const admHead = title => `<div class="admhead"><button class="backb" type="button" onclick="adminHub()">${svg('<path d="M9 6l6 6-6 6"/>', 'currentColor', 16)}<span>بازگشت</span></button><h2>${title}</h2></div>`;
 const admPage = (title, html) => { $('#main').innerHTML = admHead(title) + html; };
 const swHtml = (id, on, onchange = '') => `<label class="sw"><input type="checkbox" id="${id}" ${on ? 'checked' : ''} ${onchange ? `onchange="${onchange}"` : ''}><i></i></label>`;
 const openAdm = k => { S.adminSub = k; adminView(); };
@@ -1011,10 +1066,26 @@ async function admInv() {
     <div class="f"><label>مدت اعتبار (روز، خالی = بدون انقضا)<input id="iv_d" inputmode="numeric"></label>
     <label>تعداد دفعات (خالی = نامحدود)<input id="iv_m" inputmode="numeric"></label></div>
     <button class="p big" style="margin-top:10px" onclick="makeInvite()">ساخت لینک</button>
-    <input id="iv_out" readonly dir="ltr" style="margin-top:8px;display:none"></div>
-    ${section('لینک‌های ساخته‌شده', invites.map(i => `<div class="row"><div class="mu" dir="ltr" style="font-size:.8em">?join=${esc(i.token).slice(0, 8)}…</div>
-    <div style="display:flex;gap:6px;align-items:center"><span class="mu">${i.revoked ? 'غیرفعال' : 'فعال'} · ${fa(i.uses)} بار</span>
-    ${swHtml('iv_' + i.token.slice(0, 8), !i.revoked, `toggleInvite('${i.token}',${i.revoked})`)}</div></div>`))}`);
+    <div id="iv_out"></div></div>
+    ${section('لینک‌های ساخته‌شده', invites.map(i => `<div class="row" style="flex-direction:column;align-items:stretch">
+      ${linkRow(inviteLink(i.token))}
+      <div style="display:flex;gap:8px;align-items:center;justify-content:space-between"><span class="mu">${i.revoked ? 'غیرفعال' : 'فعال'} · ${fa(i.uses)} بار</span>
+      ${swHtml('iv_' + i.token.slice(0, 8), !i.revoked, `toggleInvite('${i.token}',${i.revoked})`)}</div></div>`))}`);
+}
+const inviteLink = t => `${location.origin}${location.pathname}?join=${t}`;
+function linkRow(link) {
+  return `<div class="linkrow"><button type="button" class="linkbtn" onclick="copyText('${link}')"><span dir="ltr">${esc(link)}</span></button><button type="button" class="icon small" onclick="copyText('${link}')" aria-label="کپی">${svg('<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>', 'currentColor', 18)}</button></div>`;
+}
+function copyText(t) {
+  const done = () => notify('لینک کپی شد ✅');
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(t).then(done, () => fallbackCopy(t, done));
+  else fallbackCopy(t, done);
+}
+function fallbackCopy(t, cb) {
+  const ta = document.createElement('textarea'); ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); cb(); } catch (e) { notify('کپی نشد؛ لینک را دستی کپی کنید', false); }
+  ta.remove();
 }
 
 async function admCh() {
@@ -1052,7 +1123,8 @@ async function admSet() {
   <div class="row"><span>پاداش روزانه</span>${swHtml('ws_bonus', ws.bonus_enabled, 'bonusToggle()')}</div>
   <label class="mu">درصد پاداش<input id="ws_bp" inputmode="numeric" value="${fa(ws.bonus_percent)}" ${ws.bonus_enabled ? '' : 'disabled'}></label>
   <label class="mu" style="margin-top:6px">درصد امتیاز پیروزی<input id="ws_wp" inputmode="numeric" value="${fa(ws.win_percent)}"></label>
-  <div class="f" style="margin-top:12px;justify-items:center">${colorPick('ws_c1', palette.primary || '#2f9e6b', 'رنگ اصلی')}${colorPick('ws_c2', palette.dark || '#1f7a52', 'رنگ فرعی')}</div>
+  <h3 style="margin-top:14px">تم رنگی لیگ</h3><p class="mu">یک تم انتخاب کنید؛ همه‌ی رنگ‌های لیگ بر اساس آن تغییر می‌کنند.</p>
+  <div class="themes">${THEMES.map(t => `<button type="button" class="theme ${(S.themeDraft || ws.palette?.key || 'blue') === t.key ? 'sel' : ''}" data-k="${t.key}" onclick="pickTheme('${t.key}')"><span class="sw2" style="background:linear-gradient(135deg,${t.primary},${t.dark})"></span>${t.name}</button>`).join('')}</div>
   <button class="p big" style="margin-top:10px" onclick="saveWs()">ذخیره تنظیمات</button></div>
   <div class="c"><h3>لوگوی لیگ</h3><div class="row nob" style="justify-content:flex-start">${logo(56)}${fileBtn('wslogo', 'تغییر لوگو', 'setLogo(this)')}</div></div>`);
 }
@@ -1133,8 +1205,8 @@ async function makeInvite() {
   const d = normD($('#iv_d').value), m = normD($('#iv_m').value);
   const {data, error} = await sb.rpc('create_invite', {p_ws: S.wid, p_days: d ? +d : null, p_max: m ? +m : null});
   if (error) return notify(error.message, false);
-  const o = $('#iv_out'); o.style.display = 'block'; o.value = `${location.origin}${location.pathname}?join=${data}`; o.select();
-  notify('لینک دعوت ساخته شد ✅'); reload();
+  $('#iv_out').innerHTML = linkRow(inviteLink(data));
+  notify('لینک دعوت ساخته شد ✅');
 }
 async function toggleInvite(token, revoked) {
   const {error} = await sb.rpc('set_invite_active', {p_token: token, p_active: !!revoked});
@@ -1145,7 +1217,7 @@ async function saveWs() {
   const bp = bonusOn ? +normD($('#ws_bp').value) : S.ws.bonus_percent;
   const v = {p_name: $('#ws_name').value.trim(), p_visibility: $('#ws_vis').value, p_bonus_enabled: bonusOn,
     p_bonus_percent: bp, p_win_percent: +normD($('#ws_wp').value), p_auto_approve: $('#ws_auto').checked,
-    p_palette: {primary: $('#ws_c1').value, dark: $('#ws_c2').value}};
+    p_palette: themeObj()};
   if (!v.p_name) return notify('نام لیگ را وارد کنید', false);
   if (bonusOn && !(bp >= 0 && bp <= 100)) return notify('درصد پاداش باید بین ۰ و ۱۰۰ باشد', false);
   const {error} = await sb.rpc('update_workspace_settings', {p_ws: S.wid, ...v});
@@ -1276,28 +1348,50 @@ async function chatView(tab) {
 }
 async function groupChatView(refresh) {
   const m = $('#main');
+  if (refresh && (S.replyTo || $('#gtxt')?.value)) return;
   const {data: mem} = await sb.rpc('get_scores', {p_ws: S.wid, p_from: S.today});
   const NAME = {}; (mem || []).forEach(r => NAME[r.member_id] = r.name);
   const {data, error} = await sb.from('messages').select('*').eq('workspace_id', S.wid).is('recipient_id', null)
     .order('created_at', {ascending: true}).limit(200);
   if (error) return m.innerHTML = `<div class="c msg err">${esc(error.message)}</div>`;
-  const list = (data || []).map(x => {
-    const mine = x.sender_id === S.uid;
+  const msgs = data || [];
+  const byId = {}; msgs.forEach(x => byId[x.id] = x);
+  S.msgCache = byId; S.NAME = NAME;
+  const pinned = msgs.filter(x => x.pinned).pop();
+  const list = msgs.map(x => {
+    const mine = x.sender_id === S.uid, par = x.reply_to ? byId[x.reply_to] : null;
     const t = new Date(x.created_at).toLocaleTimeString('fa-IR', {timeZone: 'Asia/Tehran', hour: '2-digit', minute: '2-digit'});
-    return `<div class="bub ${mine ? 'me' : ''}">${mine ? '' : `<div class="bn">${esc(NAME[x.sender_id] || '—')}</div>`}<div>${esc(x.body)}</div><div class="bt">${t}</div></div>`;
+    return `<div class="bub ${mine ? 'me' : ''}" id="m${x.id}">
+      ${mine ? '' : `<div class="bn">${esc(NAME[x.sender_id] || '—')}</div>`}
+      ${par ? `<div class="quote">${esc(NAME[par.sender_id] || '—')}: ${esc(par.body.slice(0, 60))}</div>` : ''}
+      <div>${esc(x.body)}</div>
+      <div class="bt">${t}<span class="bact"><button type="button" onclick="setReply(${x.id})">پاسخ</button>${S.isAdmin ? `<button type="button" onclick="togglePin(${x.id},${x.pinned})">${x.pinned ? 'برداشتن پین' : 'پین'}</button>` : ''}</span></div></div>`;
   }).join('');
-  if (refresh && $('#gtxt')?.value) return;
-  m.innerHTML = `<div class="gchat"><div class="gmsgs" id="gmsgs">${list || '<p class="mu">هنوز پیامی نیست. اولین پیام را بفرستید.</p>'}</div>
-    <div class="gbox"><input id="gtxt" placeholder="پیام خود را بنویسید…" maxlength="1000"><button class="p small" onclick="sendGroup()">ارسال</button></div></div>`;
+  const pinHtml = pinned ? `<div class="pinbar">📌 ${esc(NAME[pinned.sender_id] || '—')}: ${esc(pinned.body.slice(0, 120))}</div>` : '';
+  m.innerHTML = `<div class="gchat">${pinHtml}<div class="gmsgs" id="gmsgs">${list || '<p class="mu">هنوز پیامی نیست. اولین پیام را بفرستید.</p>'}</div>
+    <div class="gbox"><div id="replybar"></div><div class="grow"><input id="gtxt" placeholder="پیام خود را بنویسید…" maxlength="1000"><button class="p small" onclick="sendGroup()">ارسال</button></div></div></div>`;
+  renderReplyBar();
   const box = $('#gmsgs'); if (box) box.scrollTop = box.scrollHeight;
   clearInterval(S.gTimer);
   S.gTimer = setInterval(() => { if (S.tab === 'chat') groupChatView(true); }, 15000);
 }
+function setReply(id) { S.replyTo = id; renderReplyBar(); $('#gtxt')?.focus(); }
+function renderReplyBar() {
+  const el = $('#replybar'); if (!el) return;
+  const x = S.replyTo && S.msgCache?.[S.replyTo];
+  el.innerHTML = x ? `<div class="rbar"><span>پاسخ به ${esc(S.NAME?.[x.sender_id] || '—')}: ${esc(x.body.slice(0, 40))}</span><button type="button" class="ghost2 small" onclick="setReply(null)">×</button></div>` : '';
+}
+async function togglePin(id, cur) {
+  if (!cur) await sb.from('messages').update({pinned: false}).eq('workspace_id', S.wid).eq('pinned', true);
+  const {error} = await sb.from('messages').update({pinned: !cur}).eq('id', id);
+  if (error) return notify(error.message, false);
+  notify(cur ? 'پین برداشته شد' : 'پیام پین شد 📌'); groupChatView();
+}
 async function sendGroup() {
   const body = $('#gtxt').value.trim(); if (!body) return;
-  const {error} = await sb.from('messages').insert({workspace_id: S.wid, sender_id: S.uid, recipient_id: null, body});
+  const {error} = await sb.from('messages').insert({workspace_id: S.wid, sender_id: S.uid, recipient_id: null, body, reply_to: S.replyTo || null});
   if (error) return notify('ارسال نشد: ' + error.message, false);
-  groupChatView();
+  S.replyTo = null; groupChatView();
 }
 async function sendMsg() {
   const to = $('#msg_to').value, body = $('#msg_body').value.trim();
