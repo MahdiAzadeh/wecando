@@ -259,6 +259,19 @@ button:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}
 .pinbar{background:var(--acs);border-radius:14px;padding:8px 12px;font-size:.84em;margin-bottom:8px}
 .rbar{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--acs);border-radius:12px;padding:6px 10px;font-size:.8em;margin-bottom:6px}
 .lgt td:nth-child(3) .tot{min-width:40px}
+.admhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:6px 0 8px}
+.admhead h2{margin:0;font-size:1.15em}
+.backarr{width:38px;height:38px;border-radius:50%;padding:0;display:grid;place-items:center;background:var(--card);box-shadow:0 2px 10px rgba(20,40,75,.08);border:0;color:var(--tx)}
+.avwrap{position:relative;display:inline-block}
+.avb{position:absolute;width:30px;height:30px;border-radius:50%;background:var(--card);box-shadow:0 2px 8px rgba(20,40,75,.18);border:0;display:grid;place-items:center;color:var(--tx);padding:0;cursor:pointer}
+.avb.ed{bottom:-2px;inset-inline-end:-4px}
+.avb.del{top:-2px;inset-inline-end:-4px;color:#c0392b}
+.badge-inv{background:#e5e7eb;color:#4b5563;border-radius:999px;padding:2px 10px;font-size:.75em;font-weight:700}
+#main{animation:fadeIn .35s ease both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+#main .loader{min-height:45vh}
+.bub.me{background:var(--acs);color:var(--tx);box-shadow:0 2px 8px rgba(20,40,75,.06)}
+.bub.me .bt{color:var(--mu)}
 </style></head><body>
 <div id="app"></div><div id="drw-bg" onclick="closeDrawer()"></div><aside id="drw"></aside><div style="text-align:center;font-size:11px;color:#888;margin:8px">نسخه ۵.۲</div>
 <script>
@@ -602,7 +615,7 @@ async function register() {
   if (li.error) { notify('ثبت‌نام انجام شد؛ با شماره و رمز وارد شوید.'); return authView('login'); }
   notify('ثبت‌نام انجام شد ✅'); boot();
 }
-async function logout() { await sb.auth.signOut(); S.ws = null; S.wid = null; S.mships = []; authView('login'); }
+async function logout() { closeDrawer(); await sb.auth.signOut(); S.ws = null; S.wid = null; S.mships = []; authView('login'); }
 
 /* ---------- فهرست لیگ‌ها، عضویت، سوپر ادمین ---------- */
 async function wsListView() {
@@ -791,6 +804,7 @@ function render() {
   ${banner}<div id="main"></div>
   <nav class="tabs">${tabs.map(([k, v]) => `<button class="${S.tab === k ? 'on' : ''}" onclick="go('${k}')">${svg(TABI[k])}<span>${v}</span></button>`).join('')}</nav>`;
   renderDrawer();
+  $('#main').innerHTML = loaderHtml();
   ({submit: submitView, board: boardView, hist: histView, profile: profileView, admin: adminView, chat: groupChatView, pm: chatView, achieve: achieveView, settings: settingsView})[S.tab]();
 }
 function go(k) { clearInterval(S.gTimer); S.tab = k; if (k !== 'profile') S.viewId = null; if (k === 'admin') S.adminSub = null; S.edit = null; render(); }
@@ -938,7 +952,8 @@ async function profileView() {
   const histHtml = all.length ? `<div class="c"><h3>سابقه مراحل</h3>${all.slice(0, 5).map(row).join('')}
     <div id="histMore" style="display:none">${all.slice(5).map(row).join('')}</div>
     ${all.length > 5 ? '<button class="ghost2 small" style="width:100%;margin-top:8px" onclick="toggleHist(this)">نمایش بیشتر</button>' : ''}</div>` : '';
-  const head = `<div class="c prof-head">${av(pr, 104)}
+  const avHtml = mine ? `<div class="avwrap">${av(pr, 104)}<label class="avb ed" title="تغییر عکس">${svg('<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>', 'currentColor', 15)}<input type="file" accept="image/*" hidden onchange="uploadAvatar(this)"></label>${pr.avatar ? `<button class="avb del" type="button" onclick="removeAvatar()" aria-label="حذف عکس">${svg('<path d="M18 6L6 18M6 6l12 12"/>', 'currentColor', 15)}</button>` : ''}</div>` : `<div class="avwrap">${av(pr, 104)}</div>`;
+  const head = `<div class="c prof-head">${avHtml}
     <h2 style="margin:10px 0 2px">${esc(nmOf(pr))}</h2>
     <div><span class="chip">سطح ${fa(p.level)}</span>${p.status === 'completed' ? '<span class="tag">مسیر تکمیل شد</span>' : ''}</div>
     ${p.joined_at ? `<div class="mu">عضو از ${fd(p.joined_at.slice(0, 10), {day: 'numeric', month: 'long', year: 'numeric'})}</div>` : ''}
@@ -948,7 +963,6 @@ async function profileView() {
       <div><div class="big2">${fa(p.total)}</div><div class="mu">امتیاز کل</div></div>
       <div><div class="big2">${fa(p.rank)}</div><div class="mu">رتبه در لیگ</div></div>
       <div><div class="big2 fire">🔥 ${fa(p.best_streak)}</div><div class="mu">بیشترین استریک</div></div></div>
-    ${mine ? `<div class="av-actions">${fileBtn('p_av', 'تغییر عکس', 'uploadAvatar(this)')}${pr.avatar ? '<button class="small danger" type="button" onclick="removeAvatar()">حذف عکس</button>' : ''}</div>` : ''}
     </div>`;
   if (!mine) return m.innerHTML = head + histHtml + `<button onclick="go('board')">بازگشت به لیگ</button>`;
   const keys = S.fields.map(f => f.field_key).filter(k => k !== 'avatar'), reqMap = {};
@@ -969,7 +983,7 @@ async function uploadAvatar(inp) {
 }
 
 async function saveProfile() {
-  const keys = S.fields.map(f => f.field_key), reqMap = {};
+  const keys = S.fields.map(f => f.field_key).filter(k => k !== 'avatar'), reqMap = {};
   S.fields.forEach(f => reqMap[f.field_key] = f.required);
   const {data, errs} = await readForm(keys, reqMap, S.M.profile || {});
   if (errs.length) return notify(errs[0], false);
@@ -1012,7 +1026,7 @@ const ADM = [
   {k: 'cat', t: 'دسته‌ها', d: 'نام، رنگ و آیکون', c: '#d1537f', i: '<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>'},
   {k: 'fld', t: 'فیلدهای پروفایل', d: 'اجباری و قابل مشاهده', c: '#2a9d8f', i: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'},
   {k: 'set', t: 'تنظیمات لیگ', d: 'نام، پاداش، رنگ و لوگو', c: '#6b7a72', i: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'}];
-const admHead = title => `<div class="admhead"><button class="backb" type="button" onclick="adminHub()">${svg('<path d="M9 6l6 6-6 6"/>', 'currentColor', 16)}<span>بازگشت</span></button><h2>${title}</h2></div>`;
+const admHead = title => `<div class="admhead"><h2>${title}</h2><button class="backarr" type="button" onclick="adminHub()" aria-label="بازگشت">${svg('<path d="M15 6l-6 6 6 6"/>', 'currentColor', 18)}</button></div>`;
 const admPage = (title, html) => { $('#main').innerHTML = admHead(title) + html; };
 const swHtml = (id, on, onchange = '') => `<label class="sw"><input type="checkbox" id="${id}" ${on ? 'checked' : ''} ${onchange ? `onchange="${onchange}"` : ''}><i></i></label>`;
 const openAdm = k => { S.adminSub = k; adminView(); };
@@ -1050,15 +1064,35 @@ async function admReq() {
 }
 
 async function admMem() {
-  const {data} = await sb.from('memberships').select('user_id,role,level,profile,joined_at,status').eq('workspace_id', S.wid).in('status', ['active', 'completed']);
+  const [{data}, {data: inv}] = await Promise.all([
+    sb.from('memberships').select('user_id,role,level,profile,joined_at,status').eq('workspace_id', S.wid).in('status', ['active', 'completed']),
+    sb.from('workspace_invitees').select('*').eq('workspace_id', S.wid).order('created_at', {ascending: false})]);
   const actM = data || [], acts = actM.filter(x => x.status === 'active').length;
-  admPage('اعضا', section(`اعضای فعال (${fa(acts)} از ${fa(S.ws.max_members)})`, actM.map(x => `<div class="row">
+  admPage('اعضا', `<div class="c"><h3>افزودن عضو با شماره موبایل</h3>
+    <div class="grow"><input id="ad_ph" inputmode="numeric" dir="ltr" placeholder="09…"><button class="p small" onclick="addInvitee()">افزودن</button></div>
+    <p class="mu" style="margin-top:6px">اگر این شماره همین حالا عضو لیگ باشد، پیام داده می‌شود. در غیر این صورت به فهرست دعوت‌شده‌ها اضافه می‌شود.</p></div>`
+  + section(`اعضای فعال (${fa(acts)} از ${fa(S.ws.max_members)})`, actM.map(x => `<div class="row">
     <div><b>${esc(nmOf(x.profile))}</b> ${x.role === 'admin' ? '<span class="tag">ادمین</span>' : ''} ${x.status === 'completed' ? '<span class="tag">تکمیل‌شده</span>' : ''}
     <div class="mu">سطح ${fa(x.level)} · عضو از ${fd(x.joined_at.slice(0, 10), {day: 'numeric', month: 'long'})}</div></div>
     <div style="display:flex;gap:6px;flex-wrap:wrap">${x.status === 'active' ? `<button class="small" onclick="setRole('${x.user_id}','${x.role === 'admin' ? 'member' : 'admin'}')">${x.role === 'admin' ? 'عضو کردن' : 'ادمین کردن'}</button>
-    <button class="small danger" onclick="removeMem('${x.user_id}')">اخراج</button>` : ''}</div></div>`)));
+    <button class="small danger" onclick="removeMem('${x.user_id}')">اخراج</button>` : ''}</div></div>`))
+  + section(`دعوت‌شده‌ها (${fa((inv || []).length)})`, (inv || []).map(i => `<div class="row">
+    <span dir="ltr"><b>${esc(i.phone)}</b></span>
+    <div style="display:flex;gap:6px;align-items:center"><span class="badge-inv">دعوت شده</span><button class="small danger" onclick="removeInvitee('${i.phone}')">حذف</button></div></div>`)));
 }
-
+async function addInvitee() {
+  const ph = normD($('#ad_ph').value);
+  if (!/^09\d{9}$/.test(ph)) return notify('شماره موبایل ایرانی معتبر وارد کنید (۰۹… و ۱۱ رقم)', false);
+  const {data, error} = await sb.rpc('add_invitee', {p_ws: S.wid, p_phone: ph});
+  if (error) return notify(error.message, false);
+  if (data === 'member') notify('این شماره هم‌اکنون عضو لیگ است', false);
+  else notify('به فهرست دعوت‌شده‌ها اضافه شد ✅');
+  admMem();
+}
+async function removeInvitee(ph) {
+  const {error} = await sb.from('workspace_invitees').delete().eq('workspace_id', S.wid).eq('phone', ph);
+  notify(error ? error.message : 'حذف شد', !error); admMem();
+}
 async function admInv() {
   const {data} = await sb.from('workspace_invites').select('*').eq('workspace_id', S.wid).order('created_at', {ascending: false});
   const invites = data || [];
