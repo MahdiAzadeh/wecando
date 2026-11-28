@@ -272,6 +272,23 @@ button:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}
 #main .loader{min-height:45vh}
 .bub.me{background:var(--acs);color:var(--tx);box-shadow:0 2px 8px rgba(20,40,75,.06)}
 .bub.me .bt{color:var(--mu)}
+.flystar{position:fixed;z-index:60;pointer-events:none;display:flex;align-items:center;gap:3px;font-weight:800;color:#f5b400;font-size:15px;text-shadow:0 1px 3px rgba(0,0,0,.25)}
+.flystar span{color:var(--ac)}
+.pop2{animation:pop2 .45s ease}
+@keyframes pop2{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+.celeb{position:fixed;inset:0;z-index:50;background:rgba(10,20,45,.25);display:grid;place-items:center;animation:fadeIn .3s ease}
+.celeb canvas{position:absolute;inset:0;width:100%;height:100%}
+.celeb.out{opacity:0;transition:opacity .5s}
+.celeb-msg{position:relative;background:var(--card);border-radius:24px;padding:22px 26px;text-align:center;font-weight:800;font-size:1.05em;box-shadow:0 18px 40px rgba(20,40,75,.25);animation:popin .55s cubic-bezier(.2,1.4,.4,1);max-width:86vw}
+.celeb-msg small{font-weight:600;color:var(--mu)}
+@keyframes popin{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+.shake{animation:shake .6s ease}
+@keyframes shake{0%,100%{transform:translate(0,0)}10%{transform:translate(-6px,3px) rotate(-.4deg)}20%{transform:translate(6px,-3px) rotate(.4deg)}30%{transform:translate(-5px,2px)}40%{transform:translate(5px,-2px)}50%{transform:translate(-3px,2px)}60%{transform:translate(3px,-1px)}80%{transform:translate(-1px,1px)}}
+.bio{font-style:italic;color:var(--mu);margin:6px 0}
+.acc{color:var(--ac)}
+.inl{display:flex;gap:6px;align-items:center;margin-top:8px;padding-top:8px;border-top:1px dashed var(--bd)}
+.inl input{flex:1}
+.bub.sel{outline:2px solid var(--ac);outline-offset:2px}
 </style></head><body>
 <div id="app"></div><div id="drw-bg" onclick="closeDrawer()"></div><aside id="drw"></aside><div style="text-align:center;font-size:11px;color:#888;margin:8px">نسخه ۵.۲</div>
 <script>
@@ -581,14 +598,14 @@ const regForm = () => `<div class="f">
 <label>رمز ۵ رقمی<input id="r_pin" type="password" inputmode="numeric" maxlength="5" dir="ltr"></label>
 <label>تکرار رمز<input id="r_pin2" type="password" inputmode="numeric" maxlength="5" dir="ltr"></label></div>
 <button class="p big" style="margin-top:12px" onclick="register()">ثبت‌نام</button>
-<p class="mu">شماره و رمز برای ورود به چالشکده است. اطلاعات هر لیگ را بعد از عضویت در آن لیگ وارد می‌کنید.</p>`;
+<p class="mu">شماره و رمز برای ورود به پلتفرم چالشکده است. اطلاعات هر لیگ را بعد از عضویت در آن لیگ وارد می‌کنید.</p>`;
 function authView(mode = 'login') {
   S.ws = null; S.wid = null;
   const reg = mode === 'register';
   $('#app').innerHTML = `<div class="login">${localStorage.getItem('wcd_join') ? '<div class="banner">برای عضویت در لیگ دعوت‌شده، ابتدا وارد شوید یا ثبت‌نام کنید.</div>' : ''}<div style="margin:0 auto;width:76px">${logo(76, S.platformLogo)}</div>
   <h2 style="margin:6px 0 0">چالشکده</h2><div class="mu">${reg ? 'ثبت‌نام' : 'ورود'}</div>
   <div class="c">${reg ? regForm() : loginForm()}</div>
-  <button class="ghost2" onclick="authView('${reg ? 'login' : 'register'}')">${reg ? 'حساب دارید؟ ورود' : 'عضو نیستید؟ ثبت‌نام'}</button></div>`;
+  <button class="ghost2" onclick="authView('${reg ? 'login' : 'register'}')">${reg ? 'حساب دارید؟ <b class="acc">ورود</b>' : 'عضو نیستید؟ <b class="acc">ثبت‌نام</b>'}</button></div>`;
 }
 async function login() {
   const ph = normD($('#l_ph').value), pin = normD($('#l_pin').value);
@@ -837,12 +854,13 @@ function submitView() {
   ${notStarted ? `<div class="c"><b>ثبت شما از ${fd(S.M.active_from, {day: 'numeric', month: 'long'})} شروع می‌شود.</b></div>` : ''}
   ${!inPeriod && !notStarted ? '<div class="c mu">امروز در هیچ مرحله‌ای از این لیگ نیست.</div>' : ''}
   <div class="c"><div class="mu">چالش‌های مرحله ${fa(L)} — <b>${fd(S.today, {weekday: 'long', day: 'numeric', month: 'long'})}</b></div>
-  ${a.map(c => `<label class="ch" style="--cc:${catOf(c)?.color || '#9aa6bf'}"><input type="checkbox" value="${c.id}" ${S.done.has(c.id) ? 'checked' : ''} onchange="tot()">${chIcon(catOf(c))}
+  ${a.map(c => `<label class="ch" style="--cc:${catOf(c)?.color || '#9aa6bf'}"><input type="checkbox" value="${c.id}" ${S.done.has(c.id) ? 'checked' : ''} onchange="tickFx(this)">${chIcon(catOf(c))}
     <span class="ct">${esc(c.title)}${c.description || c.link ? `<span class="bang" onclick="event.preventDefault();event.stopPropagation();showInfo('${c.id}')">!</span>` : ''}<small>${catOf(c) ? esc(catOf(c).name) : ''}</small></span>
     <b class="pt">${fa(c.base_points)}+</b></label>`).join('')}
   <p id="tot"></p>
   ${inPeriod && !notStarted ? `<button class="p big" id="saveBtn" disabled onclick="save()">${S.saved ? 'به‌روز رسانی فعالیت امروز' : 'ثبت فعالیت امروز'}</button>` : ''}
   <p class="mu">برای ثبت یا ویرایش امتیاز روزهای گذشته برو به قسمت تاریخچه</p></div>`;
+  S.wasAll = a.length > 0 && a.every(c => S.done.has(c.id));
   tot(); summary();
 }
 function tot() {
@@ -851,6 +869,9 @@ function tot() {
   const all = a.length && done.length === a.length, bonus = all && S.ws.bonus_enabled ? lvlBonus(L) : 0;
   $('#tot').innerHTML = `<span class="chip">امتیاز پایه ${fa(base)}</span><span class="chip">پاداش ${fa(bonus)}</span><b class="sum">مجموع ${fa(base + bonus)}</b>`;
   const same = ck.length === S.done.size && ck.every(x => S.done.has(x)); const sbtn = $('#saveBtn'); if (sbtn) sbtn.disabled = same;
+  const nowAll = a.length > 0 && a.every(c => ck.includes(c.id));
+  if (nowAll && !S.wasAll) celebrate();
+  S.wasAll = nowAll;
 }
 async function summary() {
   const P = curPeriod(); if (!P) return;
@@ -861,6 +882,71 @@ async function summary() {
   el.innerHTML = `<div class="c stat"><div class="ring" style="--p:${th ? Math.min(100, Math.round(score / th * 100)) : 0}"><b>${fa(th ? Math.min(100, Math.round(score / th * 100)) : 0)}٪</b></div><div>
   <div class="big2">${fa(score)} <small>امتیاز از ${fa(th)} امتیاز لازم برای پیروزی</small></div>
   <div class="mu">🔥 استریک فعلی: <b>${fa(S.M.current_streak)}</b> روز</div></div></div>`;
+}
+
+// ---- انیمیشن امتیاز: ستاره از سطر چالش به مجموع امتیاز پرواز می‌کند ----
+function tickFx(inp) {
+  const label = inp.closest('label');
+  const c = lvlChallenges(S.M.level).find(x => x.id === inp.value);
+  tot();
+  if (inp.checked && c && label) flyPoints(label, c.base_points);
+}
+function flyPoints(fromEl, pts) {
+  const to = $('#tot .sum'); if (!to) return;
+  const a = fromEl.getBoundingClientRect(), b = to.getBoundingClientRect();
+  const star = document.createElement('div'); star.className = 'flystar';
+  star.innerHTML = `⭐<span>+${fa(pts)}</span>`;
+  star.style.left = (a.left + a.width / 2) + 'px'; star.style.top = (a.top + a.height / 2) + 'px';
+  document.body.appendChild(star);
+  const dx = (b.left + b.width / 2) - (a.left + a.width / 2), dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+  const anim = star.animate([
+    {transform: 'translate(-50%,-50%) scale(.6)', opacity: 1},
+    {transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(1.2)`, opacity: .9}],
+    {duration: 750, easing: 'cubic-bezier(.4,0,.2,1)'});
+  anim.onfinish = () => { star.remove(); const t = $('#tot .sum'); if (t) { t.classList.remove('pop2'); void t.offsetWidth; t.classList.add('pop2'); } };
+}
+
+// ---- جشن: انفجار نورافشانی، لرزش صفحه، صدای تشویق و پیام تبریک ----
+function playApplause() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const rate = ctx.sampleRate, dur = 2.4, len = Math.floor(rate * dur);
+    const buf = ctx.createBuffer(1, len, rate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) {
+      const t = i / rate;
+      const burst = Math.pow(Math.abs(Math.sin(t * 24 + Math.sin(t * 3))), 6);
+      const env = Math.exp(-t * 1.1) * (0.35 + 0.65 * burst);
+      d[i] = (Math.random() * 2 - 1) * env * 0.7;
+    }
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const filt = ctx.createBiquadFilter(); filt.type = 'bandpass'; filt.frequency.value = 2200; filt.Q.value = 0.7;
+    const gain = ctx.createGain(); gain.gain.value = 0.9;
+    src.connect(filt); filt.connect(gain); gain.connect(ctx.destination); src.start();
+    setTimeout(() => ctx.close(), 2600);
+  } catch (e) {}
+}
+function celebrate() {
+  playApplause();
+  const app = $('#app'); app.classList.remove('shake'); void app.offsetWidth; app.classList.add('shake');
+  const ov = document.createElement('div'); ov.className = 'celeb';
+  ov.innerHTML = `<canvas></canvas><div class="celeb-msg">🎉<br>عالی! امروز همه‌ی چالش‌ها را کامل کردی<br><small>پاداش روزانه‌ات ثبت شد، ادامه بده!</small></div>`;
+  document.body.appendChild(ov);
+  const cv = ov.querySelector('canvas'); cv.width = innerWidth; cv.height = innerHeight;
+  const ctx = cv.getContext('2d'), parts = [];
+  const cols = ['#2f7bf6', '#ffd166', '#ef476f', '#06d6a0', '#8e7dff', '#ff9f1c', '#ffffff'];
+  const burst = (x, y, n) => { for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, v = 2 + Math.random() * 6; parts.push({x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, c: cols[i % cols.length], r: 1.5 + Math.random() * 2.5}); } };
+  let bursts = 0;
+  const timer = setInterval(() => { burst(Math.random() * cv.width, Math.random() * cv.height * 0.6, 70); if (++bursts >= 7) clearInterval(timer); }, 300);
+  const t0 = performance.now();
+  const frame = now => {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    for (const p of parts) { p.vy += 0.12; p.x += p.vx; p.y += p.vy; p.vx *= 0.99; p.life -= 0.013; ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); }
+    ctx.globalAlpha = 1;
+    if (now - t0 < 4200) requestAnimationFrame(frame);
+    else { ov.classList.add('out'); setTimeout(() => ov.remove(), 600); }
+  };
+  requestAnimationFrame(frame);
+  ov.onclick = () => ov.remove();
 }
 async function save() {
   const ck = [...document.querySelectorAll('.ch input:checked')].map(i => i.value);
@@ -974,7 +1060,7 @@ async function profileView() {
     <h2 style="margin:10px 0 2px">${esc(nmOf(pr))}</h2>
     <div><span class="chip">سطح ${fa(p.level)}</span>${p.status === 'completed' ? '<span class="tag">مسیر تکمیل شد</span>' : ''}</div>
     ${p.joined_at ? `<div class="mu">عضو از ${fd(p.joined_at.slice(0, 10), {day: 'numeric', month: 'long', year: 'numeric'})}</div>` : ''}
-    ${pr.bio ? `<p>${esc(pr.bio)}</p>` : ''}
+    ${pr.bio ? `<p class="bio">«${esc(pr.bio)}»</p>` : ''}
     ${pos ? `<a class="lnk" target="_blank" rel="noopener" href="https://www.openstreetmap.org/?mlat=${pos[0]}&mlon=${pos[1]}#map=12/${pos[0]}/${pos[1]}">نمایش روی نقشه</a>` : ''}
     <div class="stat" style="justify-content:center;margin-top:8px">
       <div><div class="big2">${fa(p.total)}</div><div class="mu">امتیاز کل</div></div>
@@ -1416,21 +1502,26 @@ async function groupChatView(refresh) {
       ${mine ? '' : `<div class="bn">${esc(NAME[x.sender_id] || '—')}</div>`}
       ${par ? `<div class="quote">${esc(NAME[par.sender_id] || '—')}: ${esc(par.body.slice(0, 60))}</div>` : ''}
       <div>${esc(x.body)}</div>
-      <div class="bt">${t}<span class="bact"><button type="button" onclick="setReply(${x.id})">پاسخ</button>${S.isAdmin ? `<button type="button" onclick="togglePin(${x.id},${x.pinned})">${x.pinned ? 'برداشتن پین' : 'پین'}</button>` : ''}</span></div></div>`;
+      <div class="bt">${t}<span class="bact"><button type="button" onclick="setReply(${x.id})">پاسخ</button>${S.isAdmin ? `<button type="button" onclick="togglePin(${x.id},${x.pinned})">${x.pinned ? 'برداشتن پین' : 'پین'}</button>` : ''}</span></div>
+      ${S.replyTo === x.id ? `<div class="inl"><input id="rtxt" placeholder="پاسخ خود را بنویسید…" maxlength="1000"><button class="p small" type="button" onclick="sendReply()">ارسال</button><button class="ghost2 small" type="button" onclick="setReply(null)">×</button></div>` : ''}</div>`;
   }).join('');
   const pinHtml = pinned ? `<div class="pinbar">📌 ${esc(NAME[pinned.sender_id] || '—')}: ${esc(pinned.body.slice(0, 120))}</div>` : '';
   m.innerHTML = `<div class="gchat">${pinHtml}<div class="gmsgs" id="gmsgs">${list || '<p class="mu">هنوز پیامی نیست. اولین پیام را بفرستید.</p>'}</div>
-    <div class="gbox"><div id="replybar"></div><div class="grow"><input id="gtxt" placeholder="پیام خود را بنویسید…" maxlength="1000"><button class="p small" onclick="sendGroup()">ارسال</button></div></div></div>`;
-  renderReplyBar();
+    <div class="gbox"><div class="grow"><input id="gtxt" placeholder="پیام خود را بنویسید…" maxlength="1000"><button class="p small" onclick="sendGroup()">ارسال</button></div></div></div>`;
   const box = $('#gmsgs'); if (box) box.scrollTop = box.scrollHeight;
   clearInterval(S.gTimer);
   S.gTimer = setInterval(() => { if (S.tab === 'chat') groupChatView(true); }, 15000);
 }
-function setReply(id) { S.replyTo = id; renderReplyBar(); $('#gtxt')?.focus(); }
-function renderReplyBar() {
-  const el = $('#replybar'); if (!el) return;
-  const x = S.replyTo && S.msgCache?.[S.replyTo];
-  el.innerHTML = x ? `<div class="rbar"><span>پاسخ به ${esc(S.NAME?.[x.sender_id] || '—')}: ${esc(x.body.slice(0, 40))}</span><button type="button" class="ghost2 small" onclick="setReply(null)">×</button></div>` : '';
+async function setReply(id) {
+  S.replyTo = id;
+  await groupChatView();
+  if (id) { $('#rtxt')?.focus(); $('#m' + id)?.scrollIntoView({block: 'center', behavior: 'smooth'}); }
+}
+async function sendReply() {
+  const body = ($('#rtxt')?.value || '').trim(); if (!body) return;
+  const {error} = await sb.from('messages').insert({workspace_id: S.wid, sender_id: S.uid, recipient_id: null, body, reply_to: S.replyTo});
+  if (error) return notify('ارسال نشد: ' + error.message, false);
+  S.replyTo = null; groupChatView();
 }
 async function togglePin(id, cur) {
   if (!cur) await sb.from('messages').update({pinned: false}).eq('workspace_id', S.wid).eq('pinned', true);
@@ -1440,7 +1531,7 @@ async function togglePin(id, cur) {
 }
 async function sendGroup() {
   const body = $('#gtxt').value.trim(); if (!body) return;
-  const {error} = await sb.from('messages').insert({workspace_id: S.wid, sender_id: S.uid, recipient_id: null, body, reply_to: S.replyTo || null});
+  const {error} = await sb.from('messages').insert({workspace_id: S.wid, sender_id: S.uid, recipient_id: null, body, reply_to: null});
   if (error) return notify('ارسال نشد: ' + error.message, false);
   S.replyTo = null; groupChatView();
 }
